@@ -18,7 +18,6 @@ class AdminPage extends Component {
 
         this.props.firebase.users().on('value', snapshot => {
             const usersObject = snapshot.val();
-            console.log(usersObject);
 
             const usersList = Object.keys(usersObject).map(key => ({
                 ...usersObject[key],
@@ -69,4 +68,6 @@ const UserList = ({ users }) => (
     </ul>
 );
 
-export default withFirebase(AdminPage);
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(AdminPage);
