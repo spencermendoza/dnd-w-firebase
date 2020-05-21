@@ -2,26 +2,20 @@ import React, { Component, useState } from 'react';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 
+import GameContext from './context';
+
 const GamePage = () => {
-    const [selection, setSelection] = useState('');
+    const [selection, setSelection] = useState(null);
 
-    const testingButtons = event => {
-        console.log(selection);
-
-        setSelection(event.target.textValue);
-        console.log(selection);
+    const joinGame = () => {
+        console.log('join game button works')
+        setSelection('join');
     }
 
-    return (
-        <div>
-            <button onClick={() => testingButtons()}>
-                Join existing game:
-            </button>
-            <button onClick={() => testingButtons()}>
-                Create a new game:
-            </button>
-        </div>
-    )
+    const createGame = () => {
+        console.log('create game button works')
+        setSelection('create');
+    }
 }
 
 
@@ -40,5 +34,5 @@ const JoinGame = () => {
 
 
 
-export default withFirebase(GamePage);
+export default GamePage;
 

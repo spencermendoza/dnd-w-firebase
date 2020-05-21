@@ -6,10 +6,13 @@ import * as serviceWorker from './serviceWorker';
 
 import App from './components/App';
 import Firebase, { FirebaseContext } from './components/Firebase';
+import { GameProvider } from './components/Game/context';
 
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
-    <App />
+    <GameProvider>
+      <App />
+    </GameProvider>
   </FirebaseContext.Provider>,
   document.getElementById('root'),
 );
