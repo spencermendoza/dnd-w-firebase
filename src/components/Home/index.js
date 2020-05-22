@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 
+import { withRouter } from 'react-router-dom';
 import { withAuthorization } from '../Session';
 import * as ROUTES from '../../constants/routes';
 
@@ -9,20 +10,17 @@ import { GameContext } from '../Game/context';
 const HomePage = () => {
 
     const [formDisplay, setFormDisplay] = useState(false);
-    const [selection, setSelection] = useState(null);
+    const [selection, setSelection] = useState('');
 
-    const joinNewGame = () => {
-        console.log('the player wants to join a game');
+    const joinNewGame = (event) => {
         setSelection('join');
         setFormDisplay(true);
         console.log(selection);
     }
 
-    const createNewGame = () => {
-        console.log('the player wants to create a game');
+    const createNewGame = (event) => {
         setSelection('create');
         setFormDisplay(true);
-        console.log(selection);
     }
 
     if (formDisplay === true) {
@@ -41,48 +39,49 @@ const HomePage = () => {
     }
 };
 
-const RoomForm = (props) => {
+const RoomFormBase = (props) => {
+
+    const [selection, setSelection] = useState(props.selection);
+    const [room, setRoom] = useState();
 
     const {
         createGame,
         joinGame,
-        openDialog,
-        closeDialog,
-    } = useContext(GameContext);
-
-    const [selection, setSelection] = useState(props.selection);
-    const [room, setRoom] = useState(null);
-    const [code, setCode] = useState(false);
+    } = useContext(GameContext)
 
     const onSubmit = event => {
-        const { selection, room } = this.state;
-        console.log(code);
-
         event.preventDefault();
+
+        if (props.selection === 'create') {
+            createGame(room);
+            props.history.push(ROUTES.GAME);
+        } else if (props.selection === 'join') {
+            joinGame(room)
+            props.history.push(ROUTES.GAME);
+        }
     }
 
     const onChange = event => {
         setRoom(event.target.value);
-
-        if (event.target.value >= 1000) {
-            setCode(true);
-        }
     }
 
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} >
             <input
                 name='room'
-                onChange={onChange}
                 placeholder='Enter your four digit code'
+                onChange={onChange}
             />
-            <button disabled={{ code }} type='submit'>
+            <button type='submit'>
                 Enter Room
             </button>
         </form>
     );
 }
 
+const RoomForm = withRouter(RoomFormBase);
+
 const condition = authUser => !!authUser;
 
 export default withAuthorization(condition)(HomePage);
+export { RoomForm };

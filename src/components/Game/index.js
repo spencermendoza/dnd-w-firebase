@@ -1,31 +1,24 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useContext } from 'react';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 
-import GameContext from './context';
+import { GameContext } from './context';
 
 const GamePage = () => {
-    const [selection, setSelection] = useState(null);
 
-    const joinGame = () => {
-        console.log('join game button works')
-        setSelection('join');
-    }
+    const {
+        roomCode,
+        addPlayers
+    } = useContext(GameContext);
 
-    const createGame = () => {
-        console.log('create game button works')
-        setSelection('create');
-    }
-}
-
-
-
-
-
-
-
-const JoinGame = () => {
-    const [roomCode, setCode] = useState(0);
+    return (
+        <div>
+            <h1>You are in lobby number {roomCode}</h1>
+            <span>
+                <button onClick={addPlayers}>Add some players!</button>
+            </span>
+        </div>
+    )
 }
 
 

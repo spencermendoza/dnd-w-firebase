@@ -37,6 +37,21 @@ class Firebase {
     user = uid => this.db.ref(`users/${uid}`);
 
     users = () => this.db.ref('users');
+
+    //GAME DATABASE FUNCTIONS
+
+    createNewGameLobby = (room) => {
+        console.log('is this connected?', room);
+        this.db.ref(`games/${room}`).set({
+            owner: this.getUser(),
+            players: [],
+        });
+        this.getUser();
+    }
+
+    getUser = () => {
+        return (this.auth.currentUser.uid)
+    }
 }
 
 export default Firebase;
