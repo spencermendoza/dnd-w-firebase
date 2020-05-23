@@ -1,24 +1,36 @@
-import React, { Component, useState, useContext } from 'react';
+import React, { Component, useState, useContext, useEffect } from 'react';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 
 import { GameContext } from './context';
+import PlayerFormDialog from './PLAYER/playerFormDialog';
+import PlayerCardList from './PlayerCardList';
 
 const GamePage = () => {
 
+    const [display, setDisplay] = useState(false);
+
     const {
+        playerDialog,
         roomCode,
-        addPlayers
+        addPlayers,
+        handleAddClick,
     } = useContext(GameContext);
+
+    const { player, open } = playerDialog;
+
 
     return (
         <div>
             <h1>You are in lobby number {roomCode}</h1>
             <span>
-                <button onClick={addPlayers}>Add some players!</button>
+                <PlayerCardList />
+                {open
+                    ? <PlayerFormDialog />
+                    : <button onClick={handleAddClick} disabled={open}>Add some players!</button>}
             </span>
         </div>
-    )
+    );
 }
 
 

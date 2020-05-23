@@ -41,9 +41,8 @@ class Firebase {
     //GAME DATABASE FUNCTIONS
 
     createNewGameLobby = (room) => {
-        console.log('is this connected?', room);
         this.db.ref(`games/${room}`).set({
-            owner: this.getUser(),
+            master: this.getUser(),
             players: [],
         });
         this.getUser();
@@ -51,6 +50,12 @@ class Firebase {
 
     getUser = () => {
         return (this.auth.currentUser.uid)
+    }
+
+    addPlayers = (array, room) => {
+        this.db.ref(`games/${room}/players`).set({
+            ...array,
+        });
     }
 }
 
