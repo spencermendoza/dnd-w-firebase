@@ -4,8 +4,8 @@ import { GameContext } from './context';
 const PlayerCard = ({
     player = {},
 }) => {
-    const { name, hp, armor, damage, initiative, active } = player;
-    let isActive = '';
+    const { name, hp, armor, damage, initiative } = player;
+    // let isActive = '';
 
     const {
         // handleTogglePlayerActive,

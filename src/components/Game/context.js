@@ -1,8 +1,6 @@
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 
-import Firebase from '../Firebase/firebase';
 import { withFirebase } from '../Firebase';
-import { FirebaseContext } from '../Firebase';
 
 import { FAKE_PLAYERS } from './PLAYER/playerHelpers';
 import { Player } from './PLAYER/Player';
@@ -14,14 +12,42 @@ class GameProviderBase extends Component {
     state = {
         sortBy: 'initiative',
         roomCode: null,
-        players: FAKE_PLAYERS,
+        players: [],
+        loading: false,
         playerDialog: {
             open: false,
             player: Player.create(),
         },
     }
 
+    // componentDidMount() {
+    //     const rememberMyLobby = JSON.parse(localStorage.getItem('cacheLobby'));
+
+    //     if (rememberMyLobby) {
+    //         this.joinGame(rememberMyLobby);
+    //     } else {
+    //         console.log('there is no lobby here');
+    //     }
+    // }
+
+    cacheGameData = (number) => {
+        const lobby = number;
+        // const savedPlayers = this.state.players;
+
+        localStorage.clear();
+        localStorage.setItem('cacheLobby', JSON.stringify(lobby));
+        // localStorage.setItem('cachePlayers', JSON.stringify(savedPlayers));
+    }
+
     /////////////// FIREBASE DEPENDENT FUNCTIONS ///////////////////
+
+    checkGame = number => {
+        function answer(number) { return this.props.firebase.doesLobbyExist(number) };
+        const answerTwo = async function () { await (this.answer()) };
+        console.log(answer);
+        console.log(answerTwo);
+        return answerTwo;
+    }
 
     createGame = number => {
         this.setState({ roomCode: number });
@@ -29,12 +55,26 @@ class GameProviderBase extends Component {
     }
 
     joinGame = number => {
-        this.setState({ roomCode: number });
+        this.setState({ roomCode: number, loading: true });
+        this.props.firebase.gameLobby(number).on('value', snapshot => {
+            const playersObject = snapshot.val();
+
+            let playersList = Object.keys(playersObject).map(key => ({
+                ...playersObject[key],
+            }));
+
+            this.setState({
+                players: playersList,
+                loading: false,
+            });
+        });
+
+        this.cacheGameData(number);
     }
 
     addPlayersToFirebase = (list) => {
         const playerList = list;
-        const room = 5555;
+        const room = this.state.roomCode;
         this.props.firebase.addPlayers(playerList, room);
     }
 
@@ -74,7 +114,6 @@ class GameProviderBase extends Component {
         return list.map(p => (
             (p.id === player.id) ? player : p
         ));
-        console.log(list);
     }
 
     handleDialogCancelClick = () => {
@@ -90,6 +129,7 @@ class GameProviderBase extends Component {
         return <Provider
             value={{
                 ...this.state,
+                checkGame: this.checkGame,
                 createGame: this.createGame,
                 joinGame: this.joinGame,
                 addPlayers: this.addPlayers,

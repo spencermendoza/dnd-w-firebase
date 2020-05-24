@@ -15,7 +15,6 @@ const HomePage = () => {
     const joinNewGame = (event) => {
         setSelection('join');
         setFormDisplay(true);
-        console.log(selection);
     }
 
     const createNewGame = (event) => {
@@ -41,10 +40,11 @@ const HomePage = () => {
 
 const RoomFormBase = (props) => {
 
-    const [selection, setSelection] = useState(props.selection);
+    // const [selection, setSelection] = useState(props.selection);
     const [room, setRoom] = useState();
 
     const {
+        checkGame,
         createGame,
         joinGame,
     } = useContext(GameContext)
@@ -53,8 +53,14 @@ const RoomFormBase = (props) => {
         event.preventDefault();
 
         if (props.selection === 'create') {
-            createGame(room);
-            props.history.push(ROUTES.GAME);
+            const exists = checkGame(room);
+            if (exists) {
+                return console.log('This lobby exists already', room);
+            } else {
+                console.log('this lobby doesnt exist yet', room)
+                createGame(room);
+                props.history.push(ROUTES.GAME);
+            }
         } else if (props.selection === 'join') {
             joinGame(room)
             props.history.push(ROUTES.GAME);

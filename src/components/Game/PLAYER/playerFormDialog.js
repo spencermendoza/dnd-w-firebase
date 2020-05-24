@@ -43,7 +43,7 @@ class PlayerFormDialog extends Component {
             handleDialogCancelClick,
             handleDialogConfirmClick,
         } = this.context;
-        const { player, open } = playerDialog;
+        const { player } = playerDialog;
 
 
         return (
@@ -69,19 +69,19 @@ class PlayerFormDialog extends Component {
                     defaultValue={player.hp}
                     placeholder='HP: '
                 />
-                <label>Armor Class: </label>
-                <input
-                    type='number'
-                    ref={this.playerArmorRef}
-                    defaultValue={player.armor}
-                    placeholder='Armor Class: '
-                />
                 <label>Damage: </label>
                 <input
                     type='number'
                     ref={this.playerDamageRef}
                     defaultValue={player.damage}
                     placeholder='Damage: '
+                />
+                <label>Armor Class: </label>
+                <input
+                    type='number'
+                    ref={this.playerArmorRef}
+                    defaultValue={player.armor}
+                    placeholder='Armor Class: '
                 />
                 <button onClick={e => this.handleSubmit(e, handleDialogConfirmClick, player)}>Confirm</button>
                 <button onClick={e => this.handleCancel(e, handleDialogCancelClick)}>Cancel</button>

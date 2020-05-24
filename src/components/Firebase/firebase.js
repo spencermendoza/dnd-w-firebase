@@ -40,13 +40,32 @@ class Firebase {
 
     //GAME DATABASE FUNCTIONS
 
+    asyncFunction = async function (room) {
+        console.log('promise function called')
+        var master
+        const shit = await new Promise(resolve =>
+            this.db.ref(`games/${room}/master`).once('value').then(snapshot => {
+                master = snapshot.val()
+            }))
+        return master;
+    }
+
+    doesLobbyExist = (room) => {
+        var ref = this.db.ref(`games/${room}`);
+        return ref.once('value', function (snapshot) {
+            console.log('am i working? ', snapshot.exists())
+            return snapshot.exists();
+        });
+    }
+
     createNewGameLobby = (room) => {
         this.db.ref(`games/${room}`).set({
             master: this.getUser(),
-            players: [],
+            players: ['empty'],
         });
-        this.getUser();
     }
+
+    gameLobby = (room) => this.db.ref(`games/${room}/players`);
 
     getUser = () => {
         return (this.auth.currentUser.uid)

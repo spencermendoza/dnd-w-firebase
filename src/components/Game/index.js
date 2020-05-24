@@ -1,6 +1,4 @@
-import React, { Component, useState, useContext, useEffect } from 'react';
-import { withFirebase } from '../Firebase';
-import { withAuthorization } from '../Session';
+import React, { useContext } from 'react';
 
 import { GameContext } from './context';
 import PlayerFormDialog from './PLAYER/playerFormDialog';
@@ -8,22 +6,23 @@ import PlayerCardList from './PlayerCardList';
 
 const GamePage = () => {
 
-    const [display, setDisplay] = useState(false);
-
     const {
         playerDialog,
         roomCode,
-        addPlayers,
         handleAddClick,
+        loading,
     } = useContext(GameContext);
 
-    const { player, open } = playerDialog;
+    const { open } = playerDialog;
 
 
     return (
         <div>
             <h1>You are in lobby number {roomCode}</h1>
             <span>
+
+                {loading && <div>Loading...</div>}
+
                 <PlayerCardList />
                 {open
                     ? <PlayerFormDialog />

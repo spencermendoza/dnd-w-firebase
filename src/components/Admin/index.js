@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-import { withFirebase } from '../Firebase';
-import { AuthUserContext, withAuthorization } from '../Session';
+import { withAuthorization } from '../Session';
 
 class AdminPage extends Component {
     constructor(props) {
