@@ -45,31 +45,50 @@ const RoomFormBase = (props) => {
 
     const {
         checkGame,
-        createGame,
         joinGame,
+        createGame,
     } = useContext(GameContext)
 
     const onSubmit = event => {
         event.preventDefault();
 
         if (props.selection === 'create') {
-            const exists = checkGame(room);
-            if (exists) {
-                return console.log('This lobby exists already', room);
+            createNewGame(room);
+        } else {
+            joinNewGame(room);
+        }
+    }
+
+    const createNewGame = (room) => {
+        checkGame(room).then(result => {
+            if (result) {
+                alert('this room already exists, douchebag');
             } else {
-                console.log('this lobby doesnt exist yet', room)
+                alert('this is a fresh lobby');
                 createGame(room);
+                joinGame(room)
                 props.history.push(ROUTES.GAME);
             }
-        } else if (props.selection === 'join') {
-            joinGame(room)
-            props.history.push(ROUTES.GAME);
-        }
+        })
+    }
+
+    const joinNewGame = (room) => {
+        checkGame(room).then(result => {
+            if (result) {
+                alert('welcome to game number ' + room);
+                joinGame(room)
+                props.history.push(ROUTES.GAME);
+            } else {
+                alert('this room doesnt exist: ' + room);
+            }
+        })
     }
 
     const onChange = event => {
         setRoom(event.target.value);
     }
+
+    const isInvalid = room > 999 && room < 10000;
 
     return (
         <form onSubmit={onSubmit} >
@@ -78,7 +97,7 @@ const RoomFormBase = (props) => {
                 placeholder='Enter your four digit code'
                 onChange={onChange}
             />
-            <button type='submit'>
+            <button disabled={!isInvalid} type='submit'>
                 Enter Room
             </button>
         </form>

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { withAuthorization } from '../Session';
 
 import { GameContext } from './context';
 import PlayerFormDialog from './PLAYER/playerFormDialog';
@@ -7,8 +8,8 @@ import PlayerCardList from './PlayerCardList';
 const GamePage = () => {
 
     const {
+        game,
         playerDialog,
-        roomCode,
         handleAddClick,
         loading,
     } = useContext(GameContext);
@@ -18,7 +19,7 @@ const GamePage = () => {
 
     return (
         <div>
-            <h1>You are in lobby number {roomCode}</h1>
+            <h1>You are in lobby number {loading ? <h1>loading...</h1> : game.lobbyNumber}</h1>
             <span>
 
                 {loading && <div>Loading...</div>}
@@ -37,6 +38,6 @@ const GamePage = () => {
 
 
 
-
-export default GamePage;
+const condition = authUser => !!authUser;
+export default withAuthorization(condition)(GamePage);
 

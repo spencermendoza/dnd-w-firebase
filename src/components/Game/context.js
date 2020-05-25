@@ -4,6 +4,7 @@ import { withFirebase } from '../Firebase';
 
 import { FAKE_PLAYERS } from './PLAYER/playerHelpers';
 import { Player } from './PLAYER/Player';
+import { Game } from './Game';
 
 const GameContext = React.createContext();
 const { Provider, Consumer } = GameContext;
@@ -11,70 +12,72 @@ const { Provider, Consumer } = GameContext;
 class GameProviderBase extends Component {
     state = {
         sortBy: 'initiative',
-        roomCode: null,
-        players: [],
+        lobbyNumber: null,
         loading: false,
+        game: Game.create(),
         playerDialog: {
-            open: false,
             player: Player.create(),
+            open: false,
+            status: null,
         },
     }
 
-    // componentDidMount() {
-    //     const rememberMyLobby = JSON.parse(localStorage.getItem('cacheLobby'));
+    componentDidMount() {
+        const rememberMyLobby = JSON.parse(localStorage.getItem('cacheLobby'));
 
-    //     if (rememberMyLobby) {
-    //         this.joinGame(rememberMyLobby);
-    //     } else {
-    //         console.log('there is no lobby here');
-    //     }
-    // }
+        if (rememberMyLobby) {
+            this.joinGame(rememberMyLobby);
+        } else {
+            console.log('there is no lobby here');
+        }
+    }
 
     cacheGameData = (number) => {
-        const lobby = number;
-        // const savedPlayers = this.state.players;
+        const lobbyNumber = number;
 
         localStorage.clear();
-        localStorage.setItem('cacheLobby', JSON.stringify(lobby));
-        // localStorage.setItem('cachePlayers', JSON.stringify(savedPlayers));
+        localStorage.setItem('cacheLobby', JSON.stringify(lobbyNumber));
     }
 
     /////////////// FIREBASE DEPENDENT FUNCTIONS ///////////////////
 
-    checkGame = number => {
-        function answer(number) { return this.props.firebase.doesLobbyExist(number) };
-        const answerTwo = async function () { await (this.answer()) };
-        console.log(answer);
-        console.log(answerTwo);
-        return answerTwo;
+    checkGame = (roomOccupied) => {
+        return this.props.firebase.doesLobbyExist(roomOccupied).then(result => {
+            return result;
+        });
     }
 
     createGame = number => {
         this.setState({ roomCode: number });
-        this.props.firebase.createNewGameLobby(number);
+        const newGame = Game.create({
+            lobbyNumber: number,
+            master: this.props.firebase.getUser(),
+            combatants: [],
+        })
+        console.log(newGame);
+        this.props.firebase.createNewGameLobby(newGame);
     }
 
-    joinGame = number => {
-        this.setState({ roomCode: number, loading: true });
-        this.props.firebase.gameLobby(number).on('value', snapshot => {
-            const playersObject = snapshot.val();
-
-            let playersList = Object.keys(playersObject).map(key => ({
-                ...playersObject[key],
-            }));
-
-            this.setState({
-                players: playersList,
-                loading: false,
+    joinGame = (lobby) => {
+        this.props.firebase.gameLobby(lobby).on('value', snapshot => {
+            const lobbyObject = snapshot.val();
+            let newGame = Game.create({
+                lobbyNumber: lobbyObject.lobbyNumber,
+                master: lobbyObject.master,
+                combatants: lobbyObject.combatants,
             });
-        });
-
-        this.cacheGameData(number);
+            this.setState({
+                lobbyNumber: newGame.lobbyNumber,
+                game: newGame,
+                loading: false
+            });
+            this.cacheGameData(newGame.lobbyNumber);
+        })
     }
 
     addPlayersToFirebase = (list) => {
         const playerList = list;
-        const room = this.state.roomCode;
+        const room = this.state.lobbyNumber;
         this.props.firebase.addPlayers(playerList, room);
     }
 
@@ -82,33 +85,60 @@ class GameProviderBase extends Component {
 
     handleAddClick = () => {
         const player = Player.create();
-        this.setState({ playerDialog: { player: player, open: true } });
+        this.setState({ playerDialog: { player: player, open: true, status: 'add' } });
+    }
+
+    handleEditClick = (player) => {
+        this.setState({ playerDialog: { player: player, open: true, status: 'edit' } });
+        console.log('working...?')
     }
 
     handleDialogConfirmClick = player => {
-        console.log(player)
-        let updatedPlayers = this.state.players;
-        let addPlayer = false;
-        for (let i = 0; i < updatedPlayers.length; i++) {
-            if (updatedPlayers[i].id === player.id) {
-                updatedPlayers = this.updatePlayer(updatedPlayers, player);
-                addPlayer = false;
-                break;
-            } else {
-                addPlayer = true;
-            }
-        }
-        if (addPlayer) {
-            updatedPlayers.push(player);
+        console.log(player);
+        let dialogState = this.state.playerDialog;
+        let playerList = this.state.game.combatants;
+
+        if (dialogState.status === 'add') {
+            playerList.push(player);
+            this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
+        } else if (dialogState.status === 'edit') {
+            let newList = this.updatePlayer(playerList, player);
+            this.props.firebase.addPlayers(newList, this.state.lobbyNumber);
         }
 
         this.setState({
-            players: updatedPlayers,
-            playerDialog: { player: Player.create(), open: false },
+            playerDialog: {
+                player: Player.create(),
+                open: false,
+                status: null,
+            }
         });
-        console.log(updatedPlayers);
-        this.addPlayersToFirebase(updatedPlayers);
     }
+
+    // handleDialogConfirmClick = player => {
+    //     console.log(player)
+    //     let updatedPlayers = this.state.game.combatants;
+    //     let addPlayer = false;
+    //     for (let i = 0; i < updatedPlayers.length; i++) {
+    //         if (updatedPlayers[i].id === player.id) {
+    //             updatedPlayers = this.updatePlayer(updatedPlayers, player);
+    //             addPlayer = false;
+    //             break;
+    //         } else {
+    //             addPlayer = true;
+    //         }
+    //     }
+    //     if (addPlayer) {
+    //         updatedPlayers.push(player);
+    //     }
+
+    //     this.setState({
+    //         players: updatedPlayers,
+    //         playerDialog: { player: Player.create(), open: false },
+    //     });
+    //     console.log(updatedPlayers);
+    //     this.addPlayersToFirebase(updatedPlayers);
+    // }
 
     updatePlayer = (list, player) => {
         return list.map(p => (
@@ -118,11 +148,6 @@ class GameProviderBase extends Component {
 
     handleDialogCancelClick = () => {
         this.setState({ playerDialog: { player: Player.create(), open: false } });
-    }
-
-    handleEditClick = (player) => {
-        this.setState({ playerDialog: { player, open: true } });
-        console.log('working...?')
     }
 
     render() {

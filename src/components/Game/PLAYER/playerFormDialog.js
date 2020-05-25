@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Player } from './Player';
 import { GameContext } from '../context';
+import { withFirebase } from '../../Firebase';
 
 class PlayerFormDialog extends Component {
     constructor(props) {
@@ -22,7 +23,6 @@ class PlayerFormDialog extends Component {
     };
 
     handleSubmit = (e, onConfirm, player) => {
-        const fake = player.id ? player.id : Math.floor(Math.random() * 100000);
         e.preventDefault();
         const newPlayer = Player.create({
             name: this.playerNameRef.current.value,
@@ -31,11 +31,12 @@ class PlayerFormDialog extends Component {
             initiative: parseInt(this.playerInitiativeRef.current.value),
             armor: parseInt(this.playerArmorRef.current.value),
             owner: '',
-            id: fake,
+            id: this.props.firebase.getUser(),
             active: false,
         });
         onConfirm(newPlayer);
     }
+
 
     render() {
         const {
@@ -90,4 +91,4 @@ class PlayerFormDialog extends Component {
     }
 }
 
-export default PlayerFormDialog;
+export default withFirebase(PlayerFormDialog);

@@ -5,7 +5,6 @@ export class Player {
         damage = 0,
         initiative = 0,
         armor = 0,
-        owner = '',
         id = 0,
         active = Boolean,
     }) {
@@ -14,7 +13,6 @@ export class Player {
         this.damage = damage;
         this.initiative = initiative;
         this.armor = armor;
-        this.owner = owner;
         this.id = id;
         this.active = active;
     }

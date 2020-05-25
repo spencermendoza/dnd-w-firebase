@@ -4,18 +4,27 @@ import { GameContext } from './context';
 
 const PlayerCardList = () => {
     const {
-        players,
+        game,
         sortBy,
     } = useContext(GameContext);
 
+    const playerCheck = () => {
+        if (game.combatants.length > 0) {
+            return (
+                game.combatants.map(player => (
+                    <PlayerCard
+                        player={player}
+                        key={player.id}
+                    />
+                )));
+        } else {
+            return (<><span>There are no players in this game! Add some players to get started!</span><hr /></>);
+        }
+    }
+
     return (
         <div>
-            {players.map(player => (
-                <PlayerCard
-                    player={player}
-                    key={player.id}
-                />
-            ))}
+            {playerCheck()}
         </div>
     )
 }
