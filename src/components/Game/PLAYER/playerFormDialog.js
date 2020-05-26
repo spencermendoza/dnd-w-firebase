@@ -24,6 +24,7 @@ class PlayerFormDialog extends Component {
 
     handleSubmit = (e, onConfirm, player) => {
         e.preventDefault();
+        const id = Math.floor(Math.random() * 100000);
         const newPlayer = Player.create({
             name: this.playerNameRef.current.value,
             hp: parseInt(this.playerHpRef.current.value),
@@ -31,7 +32,7 @@ class PlayerFormDialog extends Component {
             initiative: parseInt(this.playerInitiativeRef.current.value),
             armor: parseInt(this.playerArmorRef.current.value),
             owner: '',
-            id: this.props.firebase.getUser(),
+            id: player.id ? player.id : id,
             active: false,
         });
         onConfirm(newPlayer);
@@ -44,8 +45,11 @@ class PlayerFormDialog extends Component {
             handleDialogCancelClick,
             handleDialogConfirmClick,
         } = this.context;
-        const { player } = playerDialog;
+        const { player, open } = playerDialog;
 
+        if (!open) {
+            return null;
+        }
 
         return (
             <form>

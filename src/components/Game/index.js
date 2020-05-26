@@ -4,6 +4,7 @@ import { withAuthorization } from '../Session';
 import { GameContext } from './context';
 import PlayerFormDialog from './PLAYER/playerFormDialog';
 import PlayerCardList from './PlayerCardList';
+import PlayerSortMenu from './PLAYER/PlayerSortMenu';
 
 const GamePage = () => {
 
@@ -19,11 +20,12 @@ const GamePage = () => {
 
     return (
         <div>
-            <h1>You are in lobby number {loading ? <h1>loading...</h1> : game.lobbyNumber}</h1>
+            <h1>You are in lobby number: {loading ? <h1>loading...</h1> : game.lobbyNumber}</h1>
             <span>
 
                 {loading && <div>Loading...</div>}
 
+                <PlayerSortMenu />
                 <PlayerCardList />
                 {open
                     ? <PlayerFormDialog />

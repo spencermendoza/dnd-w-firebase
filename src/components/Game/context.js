@@ -20,9 +20,28 @@ class GameProviderBase extends Component {
             open: false,
             status: null,
         },
+        sortOptions: [
+            {
+                displayText: 'Initiative Value',
+                sortBy: 'initiative'
+            },
+            {
+                displayText: 'HP',
+                sortBy: 'hp'
+            },
+            {
+                displayText: 'Armor Class',
+                sortBy: 'armor'
+            },
+            {
+                displayText: 'Damage',
+                sortBy: 'damage'
+            }
+        ]
     }
 
     componentDidMount() {
+        // localStorage.clear();
         const rememberMyLobby = JSON.parse(localStorage.getItem('cacheLobby'));
 
         if (rememberMyLobby) {
@@ -52,7 +71,7 @@ class GameProviderBase extends Component {
         const newGame = Game.create({
             lobbyNumber: number,
             master: this.props.firebase.getUser(),
-            combatants: [],
+            combatants: FAKE_PLAYERS,
         })
         console.log(newGame);
         this.props.firebase.createNewGameLobby(newGame);
@@ -90,11 +109,9 @@ class GameProviderBase extends Component {
 
     handleEditClick = (player) => {
         this.setState({ playerDialog: { player: player, open: true, status: 'edit' } });
-        console.log('working...?')
     }
 
     handleDialogConfirmClick = player => {
-        console.log(player);
         let dialogState = this.state.playerDialog;
         let playerList = this.state.game.combatants;
 
@@ -115,39 +132,24 @@ class GameProviderBase extends Component {
         });
     }
 
-    // handleDialogConfirmClick = player => {
-    //     console.log(player)
-    //     let updatedPlayers = this.state.game.combatants;
-    //     let addPlayer = false;
-    //     for (let i = 0; i < updatedPlayers.length; i++) {
-    //         if (updatedPlayers[i].id === player.id) {
-    //             updatedPlayers = this.updatePlayer(updatedPlayers, player);
-    //             addPlayer = false;
-    //             break;
-    //         } else {
-    //             addPlayer = true;
-    //         }
-    //     }
-    //     if (addPlayer) {
-    //         updatedPlayers.push(player);
-    //     }
+    handleDialogCancelClick = () => {
+        this.setState({ playerDialog: { player: Player.create(), open: false } });
+    }
 
-    //     this.setState({
-    //         players: updatedPlayers,
-    //         playerDialog: { player: Player.create(), open: false },
-    //     });
-    //     console.log(updatedPlayers);
-    //     this.addPlayersToFirebase(updatedPlayers);
-    // }
+    handleSortMenuChange = (selection) => {
+        let selectionType = selection.sortBy;
+        this.setState({ sortBy: selectionType });
+        console.log(this.state.sortBy);
+        let list = this.state.game.combatants;
+        for (let i = 0; i < list.length; i++) {
+            console.log('selected property: ', list[i].selectionType);
+        }
+    }
 
     updatePlayer = (list, player) => {
         return list.map(p => (
             (p.id === player.id) ? player : p
         ));
-    }
-
-    handleDialogCancelClick = () => {
-        this.setState({ playerDialog: { player: Player.create(), open: false } });
     }
 
     render() {
@@ -157,11 +159,11 @@ class GameProviderBase extends Component {
                 checkGame: this.checkGame,
                 createGame: this.createGame,
                 joinGame: this.joinGame,
-                addPlayers: this.addPlayers,
                 handleAddClick: this.handleAddClick,
                 handleDialogConfirmClick: this.handleDialogConfirmClick,
                 handleDialogCancelClick: this.handleDialogCancelClick,
                 handleEditClick: this.handleEditClick,
+                handleSortMenuChange: this.handleSortMenuChange,
             }}
         >{this.props.children}</Provider>
     }

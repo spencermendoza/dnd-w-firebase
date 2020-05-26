@@ -49,16 +49,18 @@ class Firebase {
     }
 
     createNewGameLobby = (newGame) => {
-        this.db.ref(`games/${newGame.lobbyNumber}`).set(newGame);
+        this.db.ref(`games/${newGame.lobbyNumber}`).set({
+            lobbyNumber: newGame.lobbyNumber,
+            master: newGame.master,
+        });
+        this.addPlayers(newGame.combatants, newGame.lobbyNumber);
     }
 
     gameLobby = (room) => this.db.ref(`games/${room}`);
 
     gamePlayers = (room) => this.db.ref(`games/${room}/combatants`);
 
-    getUser = () => {
-        return (this.auth.currentUser.uid)
-    }
+    getUser = () => this.auth.currentUser.uid;
 
     addPlayers = (array, room) => {
         this.db.ref(`games/${room}/combatants`).set({
