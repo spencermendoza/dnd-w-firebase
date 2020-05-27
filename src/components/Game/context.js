@@ -83,8 +83,9 @@ class GameProviderBase extends Component {
             let newGame = Game.create({
                 lobbyNumber: lobbyObject.lobbyNumber,
                 master: lobbyObject.master,
-                combatants: lobbyObject.combatants,
+                combatants: this.makeObjectsPlayers(lobbyObject.combatants),
             });
+            console.log(newGame);
             this.setState({
                 lobbyNumber: newGame.lobbyNumber,
                 game: newGame,
@@ -92,6 +93,18 @@ class GameProviderBase extends Component {
             });
             this.cacheGameData(newGame.lobbyNumber);
         })
+    }
+
+    makeObjectsPlayers = (object) => {
+        var combatants = object;
+        var combatantNames = Object.keys(combatants);
+        var newCombatants = [];
+        for (let i = 0; i < combatantNames.length; i++) {
+            newCombatants.push(Player.create({
+                ...combatants[combatantNames[i]],
+            }));
+        }
+        return newCombatants;
     }
 
     addPlayersToFirebase = (list) => {
@@ -137,13 +150,7 @@ class GameProviderBase extends Component {
     }
 
     handleSortMenuChange = (selection) => {
-        let selectionType = selection.sortBy;
-        this.setState({ sortBy: selectionType });
-        console.log(this.state.sortBy);
-        let list = this.state.game.combatants;
-        for (let i = 0; i < list.length; i++) {
-            console.log('selected property: ', list[i].selectionType);
-        }
+
     }
 
     updatePlayer = (list, player) => {

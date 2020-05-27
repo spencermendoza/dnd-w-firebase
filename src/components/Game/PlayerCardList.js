@@ -6,7 +6,10 @@ const PlayerCardList = () => {
     const {
         game,
         sortBy,
+        playerDialog,
     } = useContext(GameContext);
+
+    const { open } = playerDialog;
 
     const playerCheck = () => {
         if (game.combatants.length > 0) {

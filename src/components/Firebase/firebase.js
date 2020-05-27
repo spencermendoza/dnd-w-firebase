@@ -62,11 +62,19 @@ class Firebase {
 
     getUser = () => this.auth.currentUser.uid;
 
-    addPlayers = (array, room) => {
-        this.db.ref(`games/${room}/combatants`).set({
-            ...array,
-        });
+    addPlayers = (array, lobby) => {
+        for (let i = 0; i < array.length; i++) {
+            this.db.ref(`games/${lobby}/combatants/${array[i].name}`).set({
+                ...array[i]
+            });
+        }
     }
+
+    // addPlayers = (array, room) => {
+    //     this.db.ref(`games/${room}/combatants`).set({
+    //         ...array,
+    //     });
+    // }
 }
 
 export default Firebase;
