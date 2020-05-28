@@ -20,16 +20,22 @@ const PlayerSortMenu = () => {
         <ul>
             {sortOptions.map(p => (
                 <li>
-                    <PlayerSortOptions choice={p} selection={sortSelection} key={p.sortBy} />
+                    <PlayerSortOptions
+                        sortOption={p}
+                        selection={sortSelection}
+                        key={p.sortBy}
+                    />
                 </li>
             ))}
         </ul>
     )
 }
 
-const PlayerSortOptions = ({ choice, selection }) => {
+/////////////////////COMPONENT////////////////////////////////
+
+const PlayerSortOptions = ({ sortOption, selection }) => {
     return (
-        <button onClick={() => selection(choice)}>{choice.displayText}</button>
+        <button onClick={() => selection(sortOption.sortBy)}>{sortOption.displayText}</button>
     );
 }
 

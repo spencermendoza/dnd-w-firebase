@@ -7,14 +7,16 @@ const PlayerCardList = () => {
         game,
         sortBy,
         playerDialog,
+        sortPlayersBy,
     } = useContext(GameContext);
 
     const { open } = playerDialog;
+    const { combatants } = game;
 
     const playerCheck = () => {
-        if (game.combatants.length > 0) {
+        if (combatants.length > 0) {
             return (
-                game.combatants.map(player => (
+                sortPlayersBy(combatants, sortBy).map(player => (
                     <PlayerCard
                         player={player}
                         key={player.id}

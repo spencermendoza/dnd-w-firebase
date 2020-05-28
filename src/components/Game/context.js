@@ -37,7 +37,7 @@ class GameProviderBase extends Component {
                 displayText: 'Damage',
                 sortBy: 'damage'
             }
-        ]
+        ],
     }
 
     componentDidMount() {
@@ -85,7 +85,6 @@ class GameProviderBase extends Component {
                 master: lobbyObject.master,
                 combatants: this.makeObjectsPlayers(lobbyObject.combatants),
             });
-            console.log(newGame);
             this.setState({
                 lobbyNumber: newGame.lobbyNumber,
                 game: newGame,
@@ -124,16 +123,15 @@ class GameProviderBase extends Component {
         this.setState({ playerDialog: { player: player, open: true, status: 'edit' } });
     }
 
-    handleDialogConfirmClick = player => {
+    handleDialogConfirmClick = updatedPlayer => {
         let dialogState = this.state.playerDialog;
         let playerList = this.state.game.combatants;
 
         if (dialogState.status === 'add') {
-            playerList.push(player);
+            playerList.push(updatedPlayer);
             this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
         } else if (dialogState.status === 'edit') {
-            let newList = this.updatePlayer(playerList, player);
-            this.props.firebase.addPlayers(newList, this.state.lobbyNumber);
+            this.props.firebase.updatePlayer(updatedPlayer, this.state.lobbyNumber, dialogState.player);
         }
 
         this.setState({
@@ -149,14 +147,18 @@ class GameProviderBase extends Component {
         this.setState({ playerDialog: { player: Player.create(), open: false } });
     }
 
-    handleSortMenuChange = (selection) => {
+    sortPlayersBy = (list, prop) => [...list.sort(this.customSort(prop))];
 
+    customSort = prop => (a, b) => {
+        if (a[prop] > b[prop]) return -1;
+        if (a[prop] === b[prop]) return 0;
+        if (a[prop] < b[prop]) return 1;
     }
 
-    updatePlayer = (list, player) => {
-        return list.map(p => (
-            (p.id === player.id) ? player : p
-        ));
+    handleSortMenuChange = (selection) => {
+        this.setState({
+            sortBy: selection
+        });
     }
 
     render() {
@@ -171,6 +173,7 @@ class GameProviderBase extends Component {
                 handleDialogCancelClick: this.handleDialogCancelClick,
                 handleEditClick: this.handleEditClick,
                 handleSortMenuChange: this.handleSortMenuChange,
+                sortPlayersBy: this.sortPlayersBy,
             }}
         >{this.props.children}</Provider>
     }
