@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import '../../../styles.css';
 import { GameContext } from '../context';
 
 const PlayerSortMenu = () => {
@@ -12,14 +13,14 @@ const PlayerSortMenu = () => {
 
     if (openMenu === false) {
         return (
-            <button onClick={() => setOpenMenu(!openMenu)}>Open Player Sort Options</button>
+            <button onClick={() => setOpenMenu(!openMenu)} id='sortButton'>Open Player Sort Options</button>
         )
     }
 
     return (
-        <ul>
+        <ul id='sortUl'>
             {sortOptions.map(p => (
-                <li>
+                <li id='sortOptions'>
                     <PlayerSortOptions
                         sortOption={p}
                         selection={sortSelection}

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { withAuthorization } from '../Session';
+import '../../styles.css';
 
 import { GameContext } from './context';
 import PlayerFormDialog from './PLAYER/playerFormDialog';
@@ -19,8 +20,8 @@ const GamePage = () => {
 
 
     return (
-        <div>
-            <h1>You are in lobby number: {loading ? <h1>loading...</h1> : game.lobbyNumber}</h1>
+        <div id='gameDiv'>
+            <h1 id='gameLobby'>You are in lobby number: {loading ? <h1>loading...</h1> : game.lobbyNumber}</h1>
             <span>
 
                 {loading && <div>Loading...</div>}
