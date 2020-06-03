@@ -22,7 +22,7 @@ const GamePage = () => {
     return (
         <div id='gameDiv'>
             <h1 id='gameLobby'>You are in lobby number: {loading ? <h1>loading...</h1> : game.lobbyNumber}</h1>
-            <span>
+            <span id='gameSpan'>
 
                 {loading && <div>Loading...</div>}
 
@@ -30,7 +30,7 @@ const GamePage = () => {
                 <PlayerCardList />
                 {open
                     ? <PlayerFormDialog />
-                    : <button onClick={handleAddClick} disabled={open}>Add some players!</button>}
+                    : <button onClick={handleAddClick} disabled={open} id='editButton'>Add some players!</button>}
             </span>
         </div>
     );

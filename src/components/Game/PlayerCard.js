@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { GameContext } from './context';
 import PlayerFormDialog from './PLAYER/playerFormDialog';
+import '../../styles.css';
 
 const PlayerCard = ({
     player = {},
@@ -14,28 +15,28 @@ const PlayerCard = ({
     } = useContext(GameContext);
 
     return (
-        <div>
-            <h1>{name}'s attributes: </h1>
-            <ul>
-                <li>
+        <div class='cardDiv'>
+            <h1 class='playerName'>{name}'s attributes: </h1>
+            <ul class='playerInfoUl'>
+                <li class='infoItem'>
                     <h3>Initiative: </h3>
                     <p>{initiative}</p>
                 </li>
-                <li>
+                <li class='infoItem'>
                     <h3>Hit Points: </h3>
                     <p>{hp}</p>
                 </li>
-                <li>
+                <li class='infoItem'>
                     <h3>Damage: </h3>
                     <p>{damage}</p>
                 </li>
-                <li>
+                <li class='infoItem'>
                     <h3>Armor Class: </h3>
                     <p>{armor}</p>
                 </li>
             </ul>
 
-            <button onClick={() => handleEditClick(player)}>Edit this player</button>
+            <button onClick={() => handleEditClick(player)} id='editButton'>Edit this player</button>
         </div>
     )
 }

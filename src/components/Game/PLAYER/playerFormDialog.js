@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Player } from './Player';
 import { GameContext } from '../context';
 import { withFirebase } from '../../Firebase';
+import '../../../styles.css';
 
 class PlayerFormDialog extends Component {
     constructor(props) {
@@ -52,44 +53,49 @@ class PlayerFormDialog extends Component {
         }
 
         return (
-            <form>
-                <label>Name: </label>
+            <form id='formDialog'>
+                <label class='formLabels'>Name: </label>
                 <input
                     type='text'
                     ref={this.playerNameRef}
                     defaultValue={player.name}
                     placeholder='Name: '
+                    class='formItems'
                 />
-                <label>Initiative: </label>
+                <label class='formLabels'>Initiative: </label>
                 <input
                     type='number'
                     ref={this.playerInitiativeRef}
                     defaultValue={player.initiative}
                     placeholder='Initiative: '
+                    class='formItems'
                 />
-                <label>Hit Points: </label>
+                <label class='formLabels'>Hit Points: </label>
                 <input
                     type='number'
                     ref={this.playerHpRef}
                     defaultValue={player.hp}
                     placeholder='HP: '
+                    class='formItems'
                 />
-                <label>Damage: </label>
+                <label class='formLabels'>Damage: </label>
                 <input
                     type='number'
                     ref={this.playerDamageRef}
                     defaultValue={player.damage}
                     placeholder='Damage: '
+                    class='formItems'
                 />
-                <label>Armor Class: </label>
+                <label class='formLabels'>Armor Class: </label>
                 <input
                     type='number'
                     ref={this.playerArmorRef}
                     defaultValue={player.armor}
                     placeholder='Armor Class: '
+                    class='formItems'
                 />
-                <button onClick={e => this.handleSubmit(e, handleDialogConfirmClick, player)}>Confirm</button>
-                <button onClick={e => this.handleCancel(e, handleDialogCancelClick)}>Cancel</button>
+                <button onClick={e => this.handleSubmit(e, handleDialogConfirmClick, player)} class='formButtons'>Confirm</button>
+                <button onClick={e => this.handleCancel(e, handleDialogCancelClick)} class='formButtons'>Cancel</button>
             </form>
         )
     }
