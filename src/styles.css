@@ -101,6 +101,7 @@ HOME
 #homeDiv {
     display: flex;
     flex-direction: column;
+    margin-top: 25%;
 }
 
 #homeTitle {

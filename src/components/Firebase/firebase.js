@@ -74,12 +74,6 @@ class Firebase {
         this.db.ref(`games/${lobby}/combatants/${oldPlayer.name}`).remove();
         this.db.ref(`games/${lobby}/combatants/${updatedPlayer.name}`).set(updatedPlayer);
     }
-
-    // addPlayers = (array, room) => {
-    //     this.db.ref(`games/${room}/combatants`).set({
-    //         ...array,
-    //     });
-    // }
 }
 
 export default Firebase;
