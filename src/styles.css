@@ -122,6 +122,7 @@ HOME
     margin: 5px 0px;
     border: 1px solid black;
     padding: 3px;
+    width: 40%;
 }
 
 #roomForm {
@@ -202,7 +203,7 @@ PLAYER CARDS
     display: flex;
     flex-direction: column;
     border: 1px solid black;
-    margin: 5px 5px;
+    margin: 5px;
 }
 
 .playerName {
@@ -231,6 +232,18 @@ PLAYER CARDS
     margin: 5px;
     padding: 5px 0px;
     background-color: #BFFFBF;
+}
+
+/**************************************************
+ACTIVE PLAYER
+***************************************************/
+
+.activeDiv {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    /* background-color: #BFFFBF; */
+    border: 2px dashed black;
 }
 
 /**************************************************

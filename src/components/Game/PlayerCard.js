@@ -6,8 +6,16 @@ import '../../styles.css';
 const PlayerCard = ({
     player = {},
 }) => {
-    const { name, hp, armor, damage, initiative } = player;
-    // let isActive = '';
+    const { name, hp, armor, damage, initiative, active } = player;
+    let activeDiv = '';
+    let activeEdit = '';
+    if (player.active === true) {
+        activeDiv = 'activeDiv'
+        activeEdit = 'editButton';
+    } else {
+        activeDiv = 'cardDiv'
+        activeEdit = 'editButton'
+    }
 
     const {
         // handleTogglePlayerActive,
@@ -15,7 +23,7 @@ const PlayerCard = ({
     } = useContext(GameContext);
 
     return (
-        <div class='cardDiv'>
+        <div class={activeDiv}>
             <h1 class='playerName'>{name}'s attributes: </h1>
             <ul class='playerInfoUl'>
                 <li class='infoItem'>
@@ -36,7 +44,7 @@ const PlayerCard = ({
                 </li>
             </ul>
 
-            <button onClick={() => handleEditClick(player)} id='editButton'>Edit this player</button>
+            <button onClick={() => handleEditClick(player)} id={activeEdit}>Edit this player</button>
         </div>
     )
 }
