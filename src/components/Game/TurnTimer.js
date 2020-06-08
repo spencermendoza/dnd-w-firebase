@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { GameContext } from './context';
+import '../../styles.css';
 
 const TurnTimer = () => {
 
@@ -11,9 +12,9 @@ const TurnTimer = () => {
     const { bName, minutes, seconds } = timerState;
 
     return (
-        <div>
-            <button onClick={() => isTimerRunning(bName)}>{bName}</button>
-            <h2>Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h2>
+        <div class='timerDiv'>
+            <button onClick={() => isTimerRunning(bName)} class='timerButton'>{bName}</button>
+            <h2 class='timerH2'>Time remaining this turn: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h2>
         </div>
     )
 }

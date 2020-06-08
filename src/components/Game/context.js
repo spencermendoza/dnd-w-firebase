@@ -45,67 +45,7 @@ class GameProviderBase extends Component {
             currentHighest: {},
         },
         activeNumber: 0,
-    }
-
-    nextHighestInit = () => {
-        var players = this.sortPlayersBy(this.state.game.combatants, 'initiative');
-        for (let i = 0; i <= players.length; i++) {
-            if (i < players.length - 1 && players[i].active === true) {
-                console.log('first if statement, active player is between 0 and players.length, break loop')
-                players[i].active = !players[i].active
-                this.props.firebase.updatePlayer(players[i], this.state.lobbyNumber, players[i]);
-                players[i + 1].active = !players[i + 1].active
-                this.props.firebase.updatePlayer(players[i + 1], this.state.lobbyNumber, players[i + 1]);
-                break;
-            } else if (i === players.length - 1 && players[i].active === true) {
-                console.log('second if statement, active player is the last player, wraps back to top of list, breaks loop')
-                players[players.length - 1].active = !players[players.length - 1].active
-                this.props.firebase.updatePlayer(players[players.length - 1], this.state.lobbyNumber, players[players.length - 1]);
-                players[0].active = !players[0].active
-                this.props.firebase.updatePlayer(players[0], this.state.lobbyNumber, players[0]);
-                break;
-            } else if (i === players.length) {
-                console.log('nobody is active so the first player begins, then breaks loop')
-                players[0].active = !players[0].active
-                this.props.firebase.updatePlayer(players[0], this.state.lobbyNumber, players[0]);
-                break;
-            }
-            console.log('this is the point in the loop ' + i);
-        }
-        console.log(players);
-    }
-
-    isTimerRunning = (buttonName) => {
-        if (buttonName === 'Start Timer!') {
-            console.log('starting timer')
-            this.timerStart();
-        } else if (buttonName === 'Stop Timer!') {
-            console.log('stopping timer')
-            this.timerStop();
-        } else {
-            console.log('something went wrong with the timer');
-        }
-    }
-
-    timerStart = () => {
-        this.setState({
-            timerState: ({
-                minutes: 2,
-                seconds: 0,
-                bName: 'Stop Timer!',
-            })
-        });
-        this.nextHighestInit();
-    }
-
-    timerStop = () => {
-        this.setState({
-            timerState: ({
-                minutes: 2,
-                seconds: 0,
-                bName: 'Start Timer!',
-            })
-        });
+        master: false,
     }
 
     componentDidMount() {
@@ -148,6 +88,7 @@ class GameProviderBase extends Component {
     joinGame = (lobby) => {
         this.props.firebase.gameLobby(lobby).on('value', snapshot => {
             const lobbyObject = snapshot.val();
+            let currentUser = this.props.firebase.getUser();
             let newGame = Game.create({
                 lobbyNumber: lobbyObject.lobbyNumber,
                 master: lobbyObject.master,
@@ -159,6 +100,8 @@ class GameProviderBase extends Component {
                 loading: false
             });
             this.cacheGameData(newGame.lobbyNumber);
+            newGame.master === currentUser ? this.setState({ master: true }) : this.setState({ master: false });
+            console.log(this.state.master);
         })
     }
 
@@ -234,6 +177,69 @@ class GameProviderBase extends Component {
     }
 
     ///////////// TURN TIMER ////////////////
+
+
+    nextHighestInit = () => {
+        var players = this.sortPlayersBy(this.state.game.combatants, 'initiative');
+        for (let i = 0; i <= players.length; i++) {
+            if (i < players.length - 1 && players[i].active === true) {
+                players[i].active = !players[i].active
+                this.props.firebase.updatePlayer(players[i], this.state.lobbyNumber, players[i]);
+                players[i + 1].active = !players[i + 1].active
+                this.props.firebase.updatePlayer(players[i + 1], this.state.lobbyNumber, players[i + 1]);
+                break;
+            } else if (i === players.length - 1 && players[i].active === true) {
+                players[players.length - 1].active = !players[players.length - 1].active
+                this.props.firebase.updatePlayer(players[players.length - 1], this.state.lobbyNumber, players[players.length - 1]);
+                players[0].active = !players[0].active
+                this.props.firebase.updatePlayer(players[0], this.state.lobbyNumber, players[0]);
+                break;
+            } else if (i === players.length) {
+                players[0].active = !players[0].active
+                this.props.firebase.updatePlayer(players[0], this.state.lobbyNumber, players[0]);
+                break;
+            }
+        }
+        console.log(players);
+    }
+
+    isTimerRunning = (buttonName) => {
+        if (buttonName === 'Start Timer!') {
+            this.timerStart();
+        } else {
+            this.timerStop();
+        }
+    }
+
+    timerStart = () => {
+        this.nextHighestInit()
+        clearInterval(this.myInterval);
+        this.myInterval = setInterval(() => {
+            const { seconds, minutes } = this.state.timerState;
+            this.setState({ timerState: { ...this.state.timerState, bName: 'Stop Timer!' } });
+            if (seconds > 0) {
+                this.setState({ timerState: { ...this.state.timerState, seconds: seconds - 1 } });
+            }
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(this.myInterval);
+                } else {
+                    this.setState({ timerState: { ...this.state.timerState, minutes: minutes - 1, seconds: 59 } });
+                }
+            }
+        }, 1000);
+    }
+
+    timerStop = () => {
+        clearInterval(this.myInterval);
+        this.setState({
+            timerState: {
+                minutes: 2,
+                seconds: 0,
+                bName: 'Start Timer!',
+            }
+        });
+    }
 
     render() {
         return <Provider

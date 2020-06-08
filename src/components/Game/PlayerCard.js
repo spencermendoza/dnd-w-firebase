@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { GameContext } from './context';
-import PlayerFormDialog from './PLAYER/playerFormDialog';
 import '../../styles.css';
 
 const PlayerCard = ({

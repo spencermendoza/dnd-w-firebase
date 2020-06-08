@@ -284,3 +284,26 @@ PLAYER FORM DIALOG
     width: 40%;
     padding: 4px;
 }
+
+/**************************************************
+TURN TIMER
+***************************************************/
+
+.timerDiv {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+}
+
+.timerButton {
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    width: 40%;
+    margin: 2px auto;
+    background-color: #BFFFBF;
+}
+
+.timerH2 {
+    text-align: center;
+}
