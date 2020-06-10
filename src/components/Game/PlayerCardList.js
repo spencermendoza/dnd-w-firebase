@@ -6,11 +6,9 @@ const PlayerCardList = () => {
     const {
         game,
         sortBy,
-        playerDialog,
         sortPlayersBy,
     } = useContext(GameContext);
 
-    const { open } = playerDialog;
     const { combatants } = game;
 
     const playerCheck = () => {

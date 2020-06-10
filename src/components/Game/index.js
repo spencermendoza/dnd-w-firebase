@@ -27,9 +27,9 @@ const GamePage = () => {
 
                 {loading && <div>Loading...</div>}
 
+                <TurnTimer />
                 <PlayerSortMenu />
                 <PlayerCardList />
-                <TurnTimer />
                 {open
                     ? <PlayerFormDialog />
                     : <button onClick={handleAddClick} disabled={open} id='editButton'>Add some players!</button>}

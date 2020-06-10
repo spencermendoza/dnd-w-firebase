@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
+import * as ROUTES from '../../constants/routes';
 
 import { FAKE_PLAYERS } from './PLAYER/playerHelpers';
 import { Player } from './PLAYER/Player';
@@ -11,10 +12,13 @@ const { Provider, Consumer } = GameContext;
 
 class GameProviderBase extends Component {
     state = {
-        sortBy: 'initiative',
         lobbyNumber: null,
-        loading: false,
         game: Game.create(),
+        master: false,
+        currentUser: '',
+        sortBy: 'initiative',
+        loading: false,
+        timerName: 'Start',
         playerDialog: {
             player: Player.create(),
             open: false,
@@ -38,25 +42,37 @@ class GameProviderBase extends Component {
                 sortBy: 'damage'
             }
         ],
-        timerState: {
-            minutes: 2,
-            seconds: 0,
-            bName: 'Start Timer!',
-            currentHighest: {},
-        },
-        activeNumber: 0,
-        master: false,
     }
 
     componentDidMount() {
         // localStorage.clear();
         const rememberMyLobby = JSON.parse(localStorage.getItem('cacheLobby'));
 
+        this.listener = this.props.firebase.auth.onAuthStateChanged(
+            authUser => {
+                authUser
+                    ? this.setState({ currentUser: authUser.uid })
+                    : this.setState({ currentUSer: null });
+            }
+        )
+
         if (rememberMyLobby) {
-            this.joinGame(rememberMyLobby);
+            this.checkGame(rememberMyLobby).then(result => {
+                if (result) {
+                    this.joinGame(rememberMyLobby);
+                }
+            })
         } else {
             console.log('there is no lobby here');
         }
+    }
+
+    componentWillUnmount() {
+        this.listener();
+    }
+
+    setUser = (user) => {
+        console.log(user)
     }
 
     cacheGameData = (number) => {
@@ -80,6 +96,8 @@ class GameProviderBase extends Component {
             lobbyNumber: number,
             master: this.props.firebase.getUser(),
             combatants: FAKE_PLAYERS,
+            minutes: 2,
+            seconds: 0,
         })
         console.log(newGame);
         this.props.firebase.createNewGameLobby(newGame);
@@ -93,6 +111,8 @@ class GameProviderBase extends Component {
                 lobbyNumber: lobbyObject.lobbyNumber,
                 master: lobbyObject.master,
                 combatants: this.makeObjectsPlayers(lobbyObject.combatants),
+                minutes: lobbyObject.minutes,
+                seconds: lobbyObject.seconds,
             });
             this.setState({
                 lobbyNumber: newGame.lobbyNumber,
@@ -204,41 +224,54 @@ class GameProviderBase extends Component {
     }
 
     isTimerRunning = (buttonName) => {
-        if (buttonName === 'Start Timer!') {
+        console.log(buttonName)
+        if (buttonName === 'Start') {
             this.timerStart();
+        } else if (buttonName === 'Pause') {
+            this.timerPause();
         } else {
-            this.timerStop();
+            this.timerReset();
         }
     }
 
     timerStart = () => {
+        this.setState({ timerName: 'Pause' });
         this.nextHighestInit()
-        clearInterval(this.myInterval);
+        if (this.myInterval) {
+            clearInterval(this.myInterval);
+        }
         this.myInterval = setInterval(() => {
-            const { seconds, minutes } = this.state.timerState;
-            this.setState({ timerState: { ...this.state.timerState, bName: 'Stop Timer!' } });
+            const { seconds, minutes } = this.state.game;
             if (seconds > 0) {
-                this.setState({ timerState: { ...this.state.timerState, seconds: seconds - 1 } });
+                this.setState({ game: { ...this.state.game, seconds: seconds - 1 } });
             }
             if (seconds === 0) {
                 if (minutes === 0) {
                     clearInterval(this.myInterval);
                 } else {
-                    this.setState({ timerState: { ...this.state.timerState, minutes: minutes - 1, seconds: 59 } });
+                    this.setState({ game: { ...this.state.game, minutes: minutes - 1, seconds: 59 } });
                 }
             }
+            this.props.firebase.updateTime(this.state.lobbyNumber, this.state.game.minutes, this.state.game.seconds);
         }, 1000);
     }
 
-    timerStop = () => {
+    timerPause = () => {
+        clearInterval(this.myInterval);
+        this.setState({ timerName: 'Start' });
+    }
+
+    timerReset = () => {
         clearInterval(this.myInterval);
         this.setState({
-            timerState: {
+            game: {
+                ...this.state.game,
                 minutes: 2,
                 seconds: 0,
-                bName: 'Start Timer!',
-            }
+            },
+            timerName: 'Start',
         });
+        this.props.firebase.updateTime(this.state.lobbyNumber, 2, 0);
     }
 
     render() {
@@ -255,6 +288,7 @@ class GameProviderBase extends Component {
                 handleSortMenuChange: this.handleSortMenuChange,
                 sortPlayersBy: this.sortPlayersBy,
                 isTimerRunning: this.isTimerRunning,
+                setUser: this.setUser,
             }}
         >{this.props.children}</Provider>
     }

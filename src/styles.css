@@ -2,8 +2,8 @@
 
 #006600 - forest greenish. 
 #004700 - dark green,
-#BFFFBF - pale green,
-#80FF80 - light green,
+#BFFFBF - pale green, used, buttons, nav
+#80FF80 - light green, used, app background
 #FFFFFF - white,
 
 */
@@ -174,7 +174,7 @@ PLAYER SORT MENU
 #sortButton {
     border: 1px solid black;
     width: 90%;
-    margin: 5px 5% 0 5%;
+    margin: 5px 5% 5px 5%;
     padding: 5px;
     background-color: #BFFFBF;
 }
@@ -292,18 +292,40 @@ TURN TIMER
 .timerDiv {
     display: flex;
     justify-content: center;
-    flex-flow: column;
-}
-
-.timerButton {
-    display: flex;
-    justify-content: center;
+    flex-flow: row;
+    position: sticky;
+    top: 5px;
+    background-color: #006600;
+    max-width: 33.333%;
+    margin-left: 5px;
     border: 1px solid black;
-    width: 40%;
-    margin: 2px auto;
-    background-color: #BFFFBF;
 }
 
 .timerH2 {
     text-align: center;
+    margin: 5px;
+    background-color: #006600;
+    color: #ffffff;
+}
+
+.timerDivMaster {
+    display: flex;
+    justify-content: center;
+    flex-flow: row;
+    position: sticky;
+    top: 5px;
+    background-color: #006600;
+    margin: 0px 5px 0px 5px;
+    border: 1px solid black;
+    justify-content: space-around;
+}
+
+.timerButton {
+    display: flex;
+    border: 1px solid black;
+    margin: 2px;
+    background-color: #BFFFBF;
+    padding: 10px 5px;
+    width: 30%;
+    justify-content: center;
 }

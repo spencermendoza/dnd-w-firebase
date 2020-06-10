@@ -52,6 +52,8 @@ class Firebase {
         this.db.ref(`games/${newGame.lobbyNumber}`).set({
             lobbyNumber: newGame.lobbyNumber,
             master: newGame.master,
+            minutes: newGame.minutes,
+            seconds: newGame.seconds,
         });
         this.addPlayers(newGame.combatants, newGame.lobbyNumber);
     }
@@ -73,6 +75,11 @@ class Firebase {
     updatePlayer = (updatedPlayer, lobby, oldPlayer) => {
         this.db.ref(`games/${lobby}/combatants/${oldPlayer.name}`).remove();
         this.db.ref(`games/${lobby}/combatants/${updatedPlayer.name}`).set(updatedPlayer);
+    }
+
+    updateTime = (lobby, minutes, seconds) => {
+        this.db.ref(`games/${lobby}/minutes`).set(minutes);
+        this.db.ref(`games/${lobby}/seconds`).set(seconds);
     }
 }
 

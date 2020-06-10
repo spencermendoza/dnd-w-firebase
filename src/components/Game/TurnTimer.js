@@ -5,18 +5,29 @@ import '../../styles.css';
 const TurnTimer = () => {
 
     const {
-        timerState,
         isTimerRunning,
+        master,
+        game,
+        timerName,
     } = useContext(GameContext);
 
-    const { bName, minutes, seconds } = timerState;
+    const { minutes, seconds } = game;
 
-    return (
-        <div class='timerDiv'>
-            <button onClick={() => isTimerRunning(bName)} class='timerButton'>{bName}</button>
-            <h2 class='timerH2'>Time remaining this turn: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h2>
-        </div>
-    )
+    if (master) {
+        return (
+            <div class='timerDivMaster'>
+                <button onClick={() => isTimerRunning(timerName)} class='timerButton'>{timerName}</button>
+                <button onClick={() => isTimerRunning('Reset')} class='timerButton'>Reset</button>
+                <h2 class='timerH2'>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h2>
+            </div>
+        )
+    } else {
+        return (
+            <div class='timerDiv'>
+                <h2 class='timerH2'>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h2>
+            </div>
+        )
+    }
 }
 
 export default TurnTimer;
