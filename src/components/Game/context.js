@@ -65,6 +65,8 @@ class GameProviderBase extends Component {
         } else {
             console.log('there is no lobby here');
         }
+
+        this.props.firebase.checkForStagedPlayers(this.state.lobbyNumber);
     }
 
     componentWillUnmount() {
@@ -121,7 +123,6 @@ class GameProviderBase extends Component {
             });
             this.cacheGameData(newGame.lobbyNumber);
             newGame.master === currentUser ? this.setState({ master: true }) : this.setState({ master: false });
-            console.log(this.state.master);
         })
     }
 
@@ -161,9 +162,15 @@ class GameProviderBase extends Component {
         let playerList = this.state.game.combatants;
 
         if (dialogState.status === 'add') {
-            playerList.push(updatedPlayer);
-            this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
-        } else if (dialogState.status === 'edit') {
+            if (this.state.master) {
+                playerList.push(updatedPlayer);
+                this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
+            } else {
+                this.props.firebase.stagePlayer(this.state.lobbyNumber, updatedPlayer);
+            }
+        }
+
+        if (dialogState.status === 'edit') {
             this.props.firebase.updatePlayer(updatedPlayer, this.state.lobbyNumber, dialogState.player);
         }
 
@@ -178,6 +185,10 @@ class GameProviderBase extends Component {
 
     handleDialogCancelClick = () => {
         this.setState({ playerDialog: { player: Player.create(), open: false } });
+    }
+
+    handleDialogRemoveClick = (player) => {
+        this.props.firebase.removePlayer(this.state.lobbyNumber, player);
     }
 
     ///////////////////// SORTING PLAYERS //////////////////
@@ -220,11 +231,9 @@ class GameProviderBase extends Component {
                 break;
             }
         }
-        console.log(players);
     }
 
     isTimerRunning = (buttonName) => {
-        console.log(buttonName)
         if (buttonName === 'Start') {
             this.timerStart();
         } else if (buttonName === 'Pause') {
@@ -236,23 +245,37 @@ class GameProviderBase extends Component {
 
     timerStart = () => {
         this.setState({ timerName: 'Pause' });
-        this.nextHighestInit()
         if (this.myInterval) {
             clearInterval(this.myInterval);
         }
+
+        var activeBool = false;
+        for (let i = 0; i < this.state.game.combatants.length; i++) {
+            if (this.state.game.combatants[i].active === true) {
+                activeBool = true;
+            }
+        }
+
+        if (!activeBool) {
+            this.nextHighestInit();
+        }
+
         this.myInterval = setInterval(() => {
             const { seconds, minutes } = this.state.game;
             if (seconds > 0) {
                 this.setState({ game: { ...this.state.game, seconds: seconds - 1 } });
+                this.props.firebase.updateTime(this.state.lobbyNumber, this.state.game.minutes, this.state.game.seconds);
             }
             if (seconds === 0) {
                 if (minutes === 0) {
-                    clearInterval(this.myInterval);
+                    this.setState({ game: { ...this.state.game, minutes: 0, seconds: 10 } });
+                    this.props.firebase.updateTime(this.state.lobbyNumber, this.state.game.minutes, this.state.game.seconds);
+                    this.nextHighestInit()
                 } else {
                     this.setState({ game: { ...this.state.game, minutes: minutes - 1, seconds: 59 } });
+                    this.props.firebase.updateTime(this.state.lobbyNumber, this.state.game.minutes, this.state.game.seconds);
                 }
             }
-            this.props.firebase.updateTime(this.state.lobbyNumber, this.state.game.minutes, this.state.game.seconds);
         }, 1000);
     }
 
@@ -266,12 +289,16 @@ class GameProviderBase extends Component {
         this.setState({
             game: {
                 ...this.state.game,
-                minutes: 2,
-                seconds: 0,
+                minutes: 0,
+                seconds: 10,
             },
             timerName: 'Start',
         });
-        this.props.firebase.updateTime(this.state.lobbyNumber, 2, 0);
+        this.state.game.combatants.map(p => {
+            p.active = false
+            this.props.firebase.updatePlayer(p, this.state.lobbyNumber, p);
+        })
+        this.props.firebase.updateTime(this.state.lobbyNumber, 0, 10);
     }
 
     render() {
@@ -289,6 +316,7 @@ class GameProviderBase extends Component {
                 sortPlayersBy: this.sortPlayersBy,
                 isTimerRunning: this.isTimerRunning,
                 setUser: this.setUser,
+                handleDialogRemoveClick: this.handleDialogRemoveClick,
             }}
         >{this.props.children}</Provider>
     }

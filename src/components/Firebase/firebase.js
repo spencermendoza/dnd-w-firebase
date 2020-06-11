@@ -72,9 +72,26 @@ class Firebase {
         }
     }
 
+    stagePlayer = (lobby, player) => {
+        this.db.ref(`games/${lobby}/staged/${player.name}`).set({
+            ...player
+        });
+    }
+
+    checkForStagedPlayers = (lobby) => {
+        this.db.ref(`games/${lobby}/staged`).on('child_added', function (snapshot) {
+            var newPlayer = snapshot.val();
+            console.log(newPlayer);
+        })
+    }
+
     updatePlayer = (updatedPlayer, lobby, oldPlayer) => {
         this.db.ref(`games/${lobby}/combatants/${oldPlayer.name}`).remove();
         this.db.ref(`games/${lobby}/combatants/${updatedPlayer.name}`).set(updatedPlayer);
+    }
+
+    removePlayer = (lobby, player) => {
+        this.db.ref(`games/${lobby}/combatants/${player.name}`).remove();
     }
 
     updateTime = (lobby, minutes, seconds) => {

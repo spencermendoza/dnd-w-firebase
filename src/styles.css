@@ -262,6 +262,7 @@ PLAYER FORM DIALOG
     left: 0px;
     height: 421px;
     box-shadow: 5px 5px 5px;
+    justify-content: space-around;
 }
 
 .formLabels {
@@ -281,7 +282,7 @@ PLAYER FORM DIALOG
     border: 1px solid black;
     background-color: #BFFFBF;
     margin: 5px 5% 5px 5%;
-    width: 40%;
+    width: 20%;
     padding: 4px;
 }
 

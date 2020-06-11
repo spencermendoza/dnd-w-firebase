@@ -25,7 +25,7 @@ class PlayerFormDialog extends Component {
 
     handleSubmit = (e, onConfirm, player) => {
         e.preventDefault();
-        const id = Math.floor(Math.random() * 100000);
+        const id = this.props.firebase.getUser();
         const newPlayer = Player.create({
             name: this.playerNameRef.current.value,
             hp: parseInt(this.playerHpRef.current.value),
@@ -39,12 +39,17 @@ class PlayerFormDialog extends Component {
         onConfirm(newPlayer);
     }
 
+    handleRemove = (player, removeFunc) => {
+
+    }
+
 
     render() {
         const {
             playerDialog,
             handleDialogCancelClick,
             handleDialogConfirmClick,
+            handleDialogRemoveClick,
         } = this.context;
         const { player, open } = playerDialog;
 
@@ -96,6 +101,7 @@ class PlayerFormDialog extends Component {
                 />
                 <button onClick={e => this.handleSubmit(e, handleDialogConfirmClick, player)} class='formButtons'>Confirm</button>
                 <button onClick={e => this.handleCancel(e, handleDialogCancelClick)} class='formButtons'>Cancel</button>
+                <button onClick={e => handleDialogRemoveClick(player)} class='formButtons'>Remove</button>
             </form>
         )
     }
