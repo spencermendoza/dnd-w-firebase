@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import PlayerCard from './PlayerCard';
-import { GameContext } from './context';
+import { MasterContext } from '../MasterContext';
 
 const PlayerCardList = () => {
     const {
         game,
         sortBy,
         sortPlayersBy,
-    } = useContext(GameContext);
+    } = useContext(MasterContext);
 
     const { combatants } = game;
 

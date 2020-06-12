@@ -6,7 +6,7 @@ import { withAuthorization } from '../Session';
 import * as ROUTES from '../../constants/routes';
 
 import GamePage from '../Game';
-import { GameContext } from '../Game/context';
+import { MasterContext } from '../Game/MasterContext';
 
 const HomePage = () => {
 
@@ -50,7 +50,7 @@ const RoomFormBase = (props) => {
         checkGame,
         joinGame,
         createGame,
-    } = useContext(GameContext)
+    } = useContext(MasterContext)
 
     const onSubmit = event => {
         event.preventDefault();

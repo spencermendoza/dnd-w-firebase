@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 import App from './components/App';
 import Firebase, { FirebaseContext } from './components/Firebase';
-import { GameProvider, GameContext } from './components/Game/context';
+import { GameProvider, MasterContext } from './components/Game/MasterContext';
 
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>

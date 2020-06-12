@@ -5,12 +5,14 @@ export class Game {
         combatants = [],
         minutes = 2,
         seconds = 0,
+        staged = [],
     }) {
         this.lobbyNumber = lobbyNumber;
         this.master = master;
         this.combatants = combatants;
         this.minutes = minutes;
         this.seconds = seconds;
+        this.staged = staged;
     }
 
     static create(gameObj = {}) {

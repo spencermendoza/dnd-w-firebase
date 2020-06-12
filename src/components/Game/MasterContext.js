@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
-import * as ROUTES from '../../constants/routes';
 
 import { FAKE_PLAYERS } from './PLAYER/playerHelpers';
 import { Player } from './PLAYER/Player';
 import { Game } from './Game';
 
-const GameContext = React.createContext();
-const { Provider, Consumer } = GameContext;
+const MasterContext = React.createContext();
+const { Provider, Consumer } = MasterContext;
 
 class GameProviderBase extends Component {
     state = {
@@ -66,7 +65,7 @@ class GameProviderBase extends Component {
             console.log('there is no lobby here');
         }
 
-        this.props.firebase.checkForStagedPlayers(this.state.lobbyNumber);
+        // this.props.firebase.checkForStagedPlayers(this.state.lobbyNumber);
     }
 
     componentWillUnmount() {
@@ -92,6 +91,12 @@ class GameProviderBase extends Component {
         });
     }
 
+    checkStaged = (lobby) => {
+        return this.props.firebase.checkStaged(lobby).then(result => {
+            return result;
+        });
+    }
+
     createGame = number => {
         this.setState({ roomCode: number });
         const newGame = Game.create({
@@ -100,6 +105,7 @@ class GameProviderBase extends Component {
             combatants: FAKE_PLAYERS,
             minutes: 2,
             seconds: 0,
+            staged: [],
         })
         console.log(newGame);
         this.props.firebase.createNewGameLobby(newGame);
@@ -157,23 +163,47 @@ class GameProviderBase extends Component {
         this.setState({ playerDialog: { player: player, open: true, status: 'edit' } });
     }
 
+    masterAddPlayers = (player) => {
+        let playerList = this.state.game.combatants;
+        playerList.push(player);
+        this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
+        this.resetDialogState();
+    }
+
+    playerAddPlayers = (player) => {
+        this.checkStaged(this.state.lobbyNumber).then(result => {
+            if (result) {
+                alert('There is already a staged character. Please wait until they are no longer staged')
+            } else {
+                alert('Your character is now staged, they will appear on your screen once they are approved by the GM')
+                this.props.firebase.addStaged(this.state.lobbyNumber, player)
+                this.resetDialogState();
+            }
+        })
+    }
+
+    handleUpdatePlayer = (player, oldPlayer) => {
+        this.props.firebase.updatePlayer(player, this.state.lobbyNumber, oldPlayer);
+        this.resetDialogState();
+    }
+
     handleDialogConfirmClick = updatedPlayer => {
         let dialogState = this.state.playerDialog;
-        let playerList = this.state.game.combatants;
 
         if (dialogState.status === 'add') {
             if (this.state.master) {
-                playerList.push(updatedPlayer);
-                this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
+                this.masterAddPlayers(updatedPlayer);
             } else {
-                this.props.firebase.stagePlayer(this.state.lobbyNumber, updatedPlayer);
+                this.playerAddPlayers(updatedPlayer);
             }
         }
 
         if (dialogState.status === 'edit') {
-            this.props.firebase.updatePlayer(updatedPlayer, this.state.lobbyNumber, dialogState.player);
+            this.handleUpdatePlayer(updatedPlayer, dialogState.player);
         }
+    }
 
+    resetDialogState = () => {
         this.setState({
             playerDialog: {
                 player: Player.create(),
@@ -324,6 +354,6 @@ class GameProviderBase extends Component {
 
 const GameProvider = withFirebase(GameProviderBase);
 
-export { GameContext, GameProvider, Consumer as GameConsumer };
+export { MasterContext, GameProvider, Consumer as GameConsumer };
 
 

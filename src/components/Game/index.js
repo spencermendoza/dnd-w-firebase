@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import { withAuthorization } from '../Session';
 import '../../styles.css';
 
-import { GameContext } from './context';
-import PlayerFormDialog from './PLAYER/playerFormDialog';
-import PlayerCardList from './PlayerCardList';
-import PlayerSortMenu from './PLAYER/PlayerSortMenu';
-import TurnTimer from './TurnTimer';
+import { MasterContext } from './MasterContext';
+import PlayerFormDialog from './GAMEDISPLAY/playerFormDialog';
+import PlayerCardList from './GAMEDISPLAY/PlayerCardList';
+import PlayerSortMenu from './GAMEDISPLAY/PlayerSortMenu';
+import TurnTimer from './GAMEDISPLAY/TurnTimer';
 
 const GamePage = () => {
 
@@ -15,7 +15,7 @@ const GamePage = () => {
         playerDialog,
         handleAddClick,
         loading,
-    } = useContext(GameContext);
+    } = useContext(MasterContext);
 
     const { open } = playerDialog;
 

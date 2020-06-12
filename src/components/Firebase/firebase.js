@@ -40,8 +40,16 @@ class Firebase {
 
     //GAME DATABASE FUNCTIONS
 
-    doesLobbyExist = (room) => {
-        let lobbyRef = this.gameLobby(room).once('value')
+    gameLobby = (lobby) => this.db.ref(`games/${lobby}`);
+
+    gamePlayers = (lobby) => this.db.ref(`games/${lobby}/combatants`);
+
+    getUser = () => this.auth.currentUser.uid;
+
+    getStaged = (lobby) => this.db.ref(`games/${lobby}/staged`);
+
+    doesLobbyExist = (lobby) => {
+        let lobbyRef = this.gameLobby(lobby).once('value')
             .then(snapshot => {
                 return snapshot.exists();
             });
@@ -54,15 +62,10 @@ class Firebase {
             master: newGame.master,
             minutes: newGame.minutes,
             seconds: newGame.seconds,
+            staged: newGame.staged,
         });
         this.addPlayers(newGame.combatants, newGame.lobbyNumber);
     }
-
-    gameLobby = (room) => this.db.ref(`games/${room}`);
-
-    gamePlayers = (room) => this.db.ref(`games/${room}/combatants`);
-
-    getUser = () => this.auth.currentUser.uid;
 
     addPlayers = (array, lobby) => {
         for (let i = 0; i < array.length; i++) {
@@ -72,17 +75,18 @@ class Firebase {
         }
     }
 
-    stagePlayer = (lobby, player) => {
+    checkStaged = (lobby) => {
+        let stagedRef = this.getStaged(lobby).once('value')
+            .then(snapshot => {
+                return snapshot.exists();
+            });
+        return stagedRef;
+    }
+
+    addStaged = (lobby, player) => {
         this.db.ref(`games/${lobby}/staged/${player.name}`).set({
             ...player
         });
-    }
-
-    checkForStagedPlayers = (lobby) => {
-        this.db.ref(`games/${lobby}/staged`).on('child_added', function (snapshot) {
-            var newPlayer = snapshot.val();
-            console.log(newPlayer);
-        })
     }
 
     updatePlayer = (updatedPlayer, lobby, oldPlayer) => {

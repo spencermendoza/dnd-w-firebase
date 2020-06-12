@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { GameContext } from './context';
-import '../../styles.css';
+import { MasterContext } from '../MasterContext';
+import '../../../styles.css';
 
 const PlayerCard = ({
     player = {},
@@ -20,7 +20,7 @@ const PlayerCard = ({
         currentUser,
         handleEditClick,
         master,
-    } = useContext(GameContext);
+    } = useContext(MasterContext);
 
     const showEdit = () => {
         if (master || currentUser === player.id) {

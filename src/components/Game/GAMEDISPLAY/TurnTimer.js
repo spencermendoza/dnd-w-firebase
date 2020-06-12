@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { GameContext } from './context';
-import '../../styles.css';
+import { MasterContext } from '../MasterContext';
+import '../../../styles.css';
 
 const TurnTimer = () => {
 
@@ -9,7 +9,7 @@ const TurnTimer = () => {
         master,
         game,
         timerName,
-    } = useContext(GameContext);
+    } = useContext(MasterContext);
 
     const { minutes, seconds } = game;
 

@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import '../../../styles.css';
-import { GameContext } from '../context';
+import { MasterContext } from '../MasterContext';
 
 const PlayerSortMenu = () => {
-    const { sortOptions, handleSortMenuChange } = useContext(GameContext);
+    const { sortOptions, handleSortMenuChange } = useContext(MasterContext);
     const [openMenu, setOpenMenu] = useState(false);
 
     const sortSelection = (selection) => {

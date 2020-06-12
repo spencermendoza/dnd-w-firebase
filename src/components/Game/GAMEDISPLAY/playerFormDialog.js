@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Player } from './Player';
-import { GameContext } from '../context';
+import { Player } from '../PLAYER/Player';
+import { MasterContext } from '../MasterContext';
 import { withFirebase } from '../../Firebase';
 import '../../../styles.css';
 
@@ -16,7 +16,7 @@ class PlayerFormDialog extends Component {
         this.playerIdRef = React.createRef();
     }
 
-    static contextType = GameContext;
+    static contextType = MasterContext;
 
     handleCancel = (e, onCancel) => {
         e.preventDefault();
