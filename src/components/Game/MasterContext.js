@@ -45,7 +45,7 @@ class GameProviderBase extends Component {
 
     componentDidMount() {
         // localStorage.clear();
-        const rememberMyLobby = JSON.parse(localStorage.getItem('cacheLobby'));
+        this.joinCachedLobby();
 
         this.listener = this.props.firebase.auth.onAuthStateChanged(
             authUser => {
@@ -54,18 +54,6 @@ class GameProviderBase extends Component {
                     : this.setState({ currentUSer: null });
             }
         )
-
-        if (rememberMyLobby) {
-            this.checkGame(rememberMyLobby).then(result => {
-                if (result) {
-                    this.joinGame(rememberMyLobby);
-                }
-            })
-        } else {
-            console.log('there is no lobby here');
-        }
-
-        // this.props.firebase.checkForStagedPlayers(this.state.lobbyNumber);
     }
 
     componentWillUnmount() {
@@ -81,6 +69,20 @@ class GameProviderBase extends Component {
 
         localStorage.clear();
         localStorage.setItem('cacheLobby', JSON.stringify(lobbyNumber));
+    }
+
+    joinCachedLobby = () => {
+        const rememberedLobby = JSON.parse(localStorage.getItem('cacheLobby'));
+
+        if (rememberedLobby) {
+            this.checkGame(rememberedLobby).then(result => {
+                if (result) {
+                    this.joinGame(rememberedLobby);
+                }
+            })
+        } else {
+            console.log('There is no lobby here');
+        }
     }
 
     /////////////// FIREBASE DEPENDENT FUNCTIONS ///////////////////
