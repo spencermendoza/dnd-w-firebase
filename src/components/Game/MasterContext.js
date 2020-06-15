@@ -45,7 +45,6 @@ class GameProviderBase extends Component {
 
     componentDidMount() {
         // localStorage.clear();
-        this.joinCachedLobby();
 
         this.listener = this.props.firebase.auth.onAuthStateChanged(
             authUser => {
@@ -54,6 +53,8 @@ class GameProviderBase extends Component {
                     : this.setState({ currentUSer: null });
             }
         )
+
+        this.joinCachedLobby();
     }
 
     componentWillUnmount() {
@@ -77,7 +78,8 @@ class GameProviderBase extends Component {
         if (rememberedLobby) {
             this.checkGame(rememberedLobby).then(result => {
                 if (result) {
-                    this.joinGame(rememberedLobby);
+                    this.joinGame(rememberedLobby)
+                    this.checkStaged(rememberedLobby)
                 }
             })
         } else {
@@ -95,7 +97,11 @@ class GameProviderBase extends Component {
 
     checkStaged = (lobby) => {
         return this.props.firebase.checkStaged(lobby).then(result => {
-            return result;
+            if (result) {
+                console.log('true, ', result)
+            } else {
+                console.log('false, ', result)
+            }
         });
     }
 
@@ -176,8 +182,10 @@ class GameProviderBase extends Component {
         this.checkStaged(this.state.lobbyNumber).then(result => {
             if (result) {
                 alert('There is already a staged character. Please wait until they are no longer staged')
+                console.log('true, ', result)
             } else {
                 alert('Your character is now staged, they will appear on your screen once they are approved by the GM')
+                console.log('false, ', result)
                 this.props.firebase.addStaged(this.state.lobbyNumber, player)
                 this.resetDialogState();
             }

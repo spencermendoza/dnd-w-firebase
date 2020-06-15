@@ -56,6 +56,14 @@ class Firebase {
         return lobbyRef;
     }
 
+    checkStaged = (lobby) => {
+        let stagedRef = this.getStaged(lobby).once('value')
+            .then(snapshot => {
+                return snapshot.exists();
+            });
+        return stagedRef;
+    }
+
     createNewGameLobby = (newGame) => {
         this.db.ref(`games/${newGame.lobbyNumber}`).set({
             lobbyNumber: newGame.lobbyNumber,
@@ -75,16 +83,8 @@ class Firebase {
         }
     }
 
-    checkStaged = (lobby) => {
-        let stagedRef = this.getStaged(lobby).once('value')
-            .then(snapshot => {
-                return snapshot.exists();
-            });
-        return stagedRef;
-    }
-
     addStaged = (lobby, player) => {
-        this.db.ref(`games/${lobby}/staged/${player.name}`).set({
+        this.db.ref(`games/${lobby}/staged`).set({
             ...player
         });
     }
