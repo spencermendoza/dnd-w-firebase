@@ -41,7 +41,13 @@ class GameProviderBase extends Component {
                 sortBy: 'damage'
             }
         ],
+        stagedPlayer: {
+            staged: false,
+            player: Player.create(),
+        }
     }
+
+    ///////////////////////AUTOMATIC GAME FUNCTIONS/////////////////////////////////////
 
     componentDidMount() {
         // localStorage.clear();
@@ -61,15 +67,14 @@ class GameProviderBase extends Component {
         this.listener();
     }
 
-    setUser = (user) => {
-        console.log(user)
-    }
-
     cacheGameData = (number) => {
         const lobbyNumber = number;
+        const rememberedLobby = JSON.parse(localStorage.getItem('cacheLobby'));
 
-        localStorage.clear();
-        localStorage.setItem('cacheLobby', JSON.stringify(lobbyNumber));
+        if (lobbyNumber !== rememberedLobby) {
+            localStorage.clear();
+            localStorage.setItem('cacheLobby', JSON.stringify(lobbyNumber));
+        }
     }
 
     joinCachedLobby = () => {
@@ -79,7 +84,6 @@ class GameProviderBase extends Component {
             this.checkGame(rememberedLobby).then(result => {
                 if (result) {
                     this.joinGame(rememberedLobby)
-                    this.checkStaged(rememberedLobby)
                 }
             })
         } else {
@@ -97,16 +101,11 @@ class GameProviderBase extends Component {
 
     checkStaged = (lobby) => {
         return this.props.firebase.checkStaged(lobby).then(result => {
-            if (result) {
-                console.log('true, ', result)
-            } else {
-                console.log('false, ', result)
-            }
+            return result;
         });
     }
 
     createGame = number => {
-        this.setState({ roomCode: number });
         const newGame = Game.create({
             lobbyNumber: number,
             master: this.props.firebase.getUser(),
@@ -130,14 +129,36 @@ class GameProviderBase extends Component {
                 minutes: lobbyObject.minutes,
                 seconds: lobbyObject.seconds,
             });
+
             this.setState({
                 lobbyNumber: newGame.lobbyNumber,
                 game: newGame,
                 loading: false
             });
+
+            if (newGame.master === currentUser) {
+                this.setState({ master: true })
+                this.masterGetStaged();
+            }
             this.cacheGameData(newGame.lobbyNumber);
-            newGame.master === currentUser ? this.setState({ master: true }) : this.setState({ master: false });
+        });
+    }
+
+    masterGetStaged = () => {
+        this.checkStaged(this.state.lobbyNumber).then(result => {
+            this.props.firebase.getStaged(this.state.lobbyNumber).on('value', snapshot => {
+                const stagedPlayer = snapshot.val();
+                var newPlayer = this.makeObjectPlayer(stagedPlayer)
+                this.setState({ stagedPlayer: { staged: true, player: newPlayer } })
+            })
         })
+    }
+
+    makeObjectPlayer = (object) => {
+        var newPlayer = Player.create({
+            ...object
+        });
+        return newPlayer;
     }
 
     makeObjectsPlayers = (object) => {
@@ -145,9 +166,7 @@ class GameProviderBase extends Component {
         var combatantNames = Object.keys(combatants);
         var newCombatants = [];
         for (let i = 0; i < combatantNames.length; i++) {
-            newCombatants.push(Player.create({
-                ...combatants[combatantNames[i]],
-            }));
+            newCombatants.push(this.makeObjectPlayer(combatants[combatantNames[i]]));
         }
         return newCombatants;
     }
@@ -355,7 +374,6 @@ class GameProviderBase extends Component {
                 handleSortMenuChange: this.handleSortMenuChange,
                 sortPlayersBy: this.sortPlayersBy,
                 isTimerRunning: this.isTimerRunning,
-                setUser: this.setUser,
                 handleDialogRemoveClick: this.handleDialogRemoveClick,
             }}
         >{this.props.children}</Provider>

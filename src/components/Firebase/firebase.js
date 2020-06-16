@@ -44,9 +44,9 @@ class Firebase {
 
     gamePlayers = (lobby) => this.db.ref(`games/${lobby}/combatants`);
 
-    getUser = () => this.auth.currentUser.uid;
-
     getStaged = (lobby) => this.db.ref(`games/${lobby}/staged`);
+
+    getUser = () => this.auth.currentUser.uid;
 
     doesLobbyExist = (lobby) => {
         let lobbyRef = this.gameLobby(lobby).once('value')
