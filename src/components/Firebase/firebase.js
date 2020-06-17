@@ -83,10 +83,17 @@ class Firebase {
         }
     }
 
-    addStaged = (lobby, player) => {
-        this.db.ref(`games/${lobby}/staged`).set({
-            ...player
+    addStaged = (lobby, player, status, playerOwner) => {
+        this.db.ref(`games/${lobby}/staged/`).set({
+            status,
         });
+        this.db.ref(`games/${lobby}/staged/player`).set({
+            ...player,
+        });
+    }
+
+    removeStaged = (lobby) => {
+        this.db.ref(`games/${lobby}/staged`).remove();
     }
 
     updatePlayer = (updatedPlayer, lobby, oldPlayer) => {
