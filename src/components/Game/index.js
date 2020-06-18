@@ -7,6 +7,7 @@ import PlayerFormDialog from './GAMEDISPLAY/playerFormDialog';
 import PlayerCardList from './GAMEDISPLAY/PlayerCardList';
 import PlayerSortMenu from './GAMEDISPLAY/PlayerSortMenu';
 import TurnTimer from './GAMEDISPLAY/TurnTimer';
+import DungeonMasterMenu from './GAMEDISPLAY/DungeonMasterMenu';
 
 const GamePage = () => {
 
@@ -16,16 +17,13 @@ const GamePage = () => {
         handleAddClick,
         loading,
         master,
-        stagedPlayer,
-        masterViewStagedPlayer,
     } = useContext(MasterContext);
 
     const { open } = playerDialog;
-    const { staged, player } = stagedPlayer;
 
-    const checkForStaged = () => {
-        if (master && staged) {
-            return <button class='stagedButton' onClick={masterViewStagedPlayer}>View staged player</button>
+    const masterMenu = () => {
+        if (master) {
+            return <DungeonMasterMenu />
         }
     }
 
@@ -38,7 +36,7 @@ const GamePage = () => {
                 {loading && <div>Loading...</div>}
 
                 <TurnTimer />
-                {checkForStaged()}
+                {masterMenu()}
                 <PlayerSortMenu />
                 <PlayerCardList />
                 {open
