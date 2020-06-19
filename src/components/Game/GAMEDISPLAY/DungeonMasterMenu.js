@@ -29,17 +29,17 @@ const DungeonMasterMenu = () => {
         return (
             <div class='masterMenuOpen'>
                 <ul class='masterMenu'>
-                    <li onClick={() => isTimerRunning(timerName)}>{timerName}</li>
-                    <li onClick={() => isTimerRunning('Reset')}>Reset</li>
+                    <li onClick={() => isTimerRunning(timerName)} class='masterMenuItem'>{timerName} Timer</li>
+                    <li onClick={() => isTimerRunning('Reset')} class='masterMenuItem'>Reset Timer</li>
                     {checkForStaged()}
-                    <li onClick={() => setOpen(!openMenu)}>Close DM Menu</li>
+                    <li onClick={() => setOpen(!openMenu)} class='masterMenuItem'>Close DM Menu</li>
                 </ul>
             </div>
         )
     } else {
         return (
             <div class='masterMenuClose'>
-                <button onClick={() => setOpen(!openMenu)} class='openMenu'>DM Menu</button>
+                <button onClick={() => setOpen(!openMenu)} class='openMenuBtn'>Menu</button>
             </div>
         )
     }

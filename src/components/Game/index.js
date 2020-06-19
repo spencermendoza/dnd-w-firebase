@@ -38,10 +38,10 @@ const GamePage = () => {
                 <TurnTimer />
                 {masterMenu()}
                 <PlayerSortMenu />
-                <PlayerCardList />
                 {open
                     ? <PlayerFormDialog />
-                    : <button onClick={handleAddClick} disabled={open} id='editButton'>Add some players!</button>}
+                    : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
+                <PlayerCardList />
             </span>
         </div>
     );

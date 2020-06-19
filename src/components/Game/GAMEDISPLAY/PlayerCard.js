@@ -7,13 +7,26 @@ const PlayerCard = ({
 }) => {
     const { name, hp, armor, damage, initiative, active, id } = player;
     let activeDiv = '';
-    let activeEdit = '';
+    let activeName = '';
+    let activeInfoUl = '';
+    let activeInfoItem = '';
+    let activeInfoInfo = '';
+    let activeEditButton = '';
     if (player.active === true) {
         activeDiv = 'activeDiv'
-        activeEdit = 'editButton';
+        activeName = 'activeName'
+        activeInfoUl = 'activeInfoUl'
+        activeInfoItem = 'activeInfoItem'
+        activeInfoInfo = 'activeInfoInfo'
+        activeEditButton = 'activeEditButton'
     } else {
         activeDiv = 'cardDiv'
-        activeEdit = 'editButton'
+        activeName = 'playerName'
+        activeInfoUl = 'playerInfoUl'
+        activeInfoItem = 'playerInfoItem'
+        activeInfoInfo = 'playerInfoInfo'
+        activeEditButton = 'editButton'
+
     }
 
     const {
@@ -25,30 +38,30 @@ const PlayerCard = ({
     const showEdit = () => {
         if (master || currentUser === player.id) {
             return (
-                <button onClick={() => handleEditClick(player)} id={activeEdit}>Edit this player</button>
+                <button onClick={() => handleEditClick(player)} id={activeEditButton}>Edit this player</button>
             )
         }
     }
 
     return (
         <div class={activeDiv}>
-            <h1 class='playerName'>{name}'s attributes: </h1>
-            <ul class='playerInfoUl'>
-                <li class='infoItem'>
-                    <h3>Initiative: </h3>
-                    <p>{initiative}</p>
+            <h1 class={activeName}>{name}'s attributes: </h1>
+            <ul class={activeInfoUl}>
+                <li class={activeInfoItem}>
+                    <h3 class={activeInfoInfo}>Initiative: </h3>
+                    <p class={activeInfoInfo}>{initiative}</p>
                 </li>
-                <li class='infoItem'>
-                    <h3>Hit Points: </h3>
-                    <p>{hp}</p>
+                <li class={activeInfoItem}>
+                    <h3 class={activeInfoInfo}>Hit Points: </h3>
+                    <p class={activeInfoInfo}>{hp}</p>
                 </li>
-                <li class='infoItem'>
-                    <h3>Damage: </h3>
-                    <p>{damage}</p>
+                <li class={activeInfoItem}>
+                    <h3 class={activeInfoInfo}>Damage: </h3>
+                    <p class={activeInfoInfo}>{damage}</p>
                 </li>
-                <li class='infoItem'>
-                    <h3>Armor Class: </h3>
-                    <p>{armor}</p>
+                <li class={activeInfoItem}>
+                    <h3 class={activeInfoInfo}>Armor Class: </h3>
+                    <p class={activeInfoInfo}>{armor}</p>
                 </li>
             </ul>
             {showEdit()}

@@ -462,6 +462,7 @@ class GameProviderBase extends Component {
                 isTimerRunning: this.isTimerRunning,
                 handleDialogRemoveClick: this.handleDialogRemoveClick,
                 masterViewStagedPlayer: this.masterViewStagedPlayer,
+                joinCachedLobby: this.joinCachedLobby,
             }}
         >{this.props.children}</Provider>
     }

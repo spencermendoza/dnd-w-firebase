@@ -1,9 +1,9 @@
 /* colors:
 
-#006600 - forest greenish. 
-#004700 - dark green,
-#BFFFBF - pale green, used, buttons, nav
-#80FF80 - light green, used, app background
+#006600 - forest greenish, main background 
+#004700 - dark green, buttons
+#BFFFBF - pale green, nav
+#80FF80 - light green,
 #FFFFFF - white,
 
 */
@@ -23,7 +23,7 @@ BASE STYLES
 **********************************/
 
 * {
-    background-color: #80FF80;
+    background-color: #006600;
 }
 
 a {
@@ -56,7 +56,7 @@ NAVIGATION
 **************************************************************************/
 
 #navDiv {
-    background-color: #BFFFBF;
+    background-color: #80FF80;
     margin: 0;
     padding: 5px 0px;
 }
@@ -68,16 +68,16 @@ NAVIGATION
     padding-left: 0;
     margin: 0;
     padding: 5px 0px;
-    background-color: #BFFFBF;
+    background-color: #80FF80;
 }
 
 .navLi {
     text-decoration: none;
-    background-color: #BFFFBF;
+    background-color: #80FF80;
 }
 
 .navLink {
-    background-color: #BFFFBF;
+    background-color: #80FF80;
 }
 
 /**************************************************
@@ -107,10 +107,12 @@ HOME
 #homeTitle {
     margin: 5px 0px;
     text-align: center;
+    color: white;
 }
 
 #homeP {
     text-align: center;
+    color: white;
 }
 
 #buttonDiv {
@@ -121,8 +123,10 @@ HOME
 .homeOptions {
     margin: 5px 0px;
     border: 1px solid black;
+    border-radius: 3px;
     padding: 3px;
     width: 40%;
+    color: white;
 }
 
 #roomForm {
@@ -131,17 +135,40 @@ HOME
     flex-direction: column;
 }
 
+#roomForm label {
+    color: white;
+    font-weight: bold;
+    font-size: 150%;
+    margin: auto;
+}
+
 #roomInput {
     margin: 15px 5px;
     text-align: center;
     padding: 5px;
+    color: white;
+    border-radius: 3px;
+}
+
+::placeholder {
+    color: white;
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: space-around;
 }
 
 #roomButton {
     border: 1px solid black;
-    padding: 2px 5px;
-    width: 50%;
-    margin: 10px 25% 0% 25%;
+    width: 40%;
+    height: 50px;
+    /* margin: 10px 25% 0% 25%; */
+    color: white;
+}
+
+#roomButton :focus {
+    border: none;
 }
 
 /**************************************************
@@ -152,6 +179,7 @@ GAME
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-color: #006600;
 }
 
 #gameLobby {
@@ -165,6 +193,7 @@ GAME
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+    background-color: #006600;
 }
 
 /**************************************************
@@ -172,11 +201,13 @@ PLAYER SORT MENU
 ***************************************************/
 
 #sortButton {
-    border: 1px solid black;
+    border: 1px solid white;
+    border-radius: 3px;
     width: 90%;
     margin: 5px 5% 5px 5%;
     padding: 5px;
-    background-color: #BFFFBF;
+    background-color: #004700;
+    color: white;
 }
 
 #sortUl {
@@ -184,15 +215,22 @@ PLAYER SORT MENU
     flex-direction: row;
     justify-content: center;
     padding: 0;
+    margin: auto;
+    background-color: #006600;
 }
 
 #sortOptions {
-    width: 75%;
+    width: 25%;
     margin: 4px 10px 4px 10px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
+    padding: 5px 3px;
     display: flex;
     justify-content: center;
+    border: 1px solid white;
+    background-color: #004700;
+}
+
+#sortOptions button {
+    color: white;
 }
 
 /**************************************************
@@ -202,12 +240,16 @@ PLAYER CARDS
 .cardDiv {
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    border: 5px solid black;
+    border-radius: 5px;
     margin: 5px;
+    background-color: #006600;
 }
 
 .playerName {
     padding-left: 5px;
+    background-color: #006600;
+    color: white;
 }
 
 .playerInfoUl {
@@ -215,23 +257,45 @@ PLAYER CARDS
     flex-flow: row wrap;
     justify-content: space-evenly;
     padding-left: 5px;
+    background-color: #006600;
+    color: white;
 }
 
-.infoItem {
+.playerInfoItem {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     border: 1px solid black;
+    border-radius: 3px;
     margin: 2.5px 2.5px;
     padding: 5px;
     width: 40%;
+    background-color: #006600;
+}
+
+.playerInfoInfo {
+    background-color: #006600;
 }
 
 #editButton {
-    border: 1px solid black;
+    border: 1px solid white;
+    border-radius: 3px;
     margin: 5px;
     padding: 5px 0px;
+    background-color: #004700;
+    color: white;
+}
+
+#addButton {
+    border: 1px solid white;
+    border-radius: 3px;
     background-color: #BFFFBF;
+    height: 25px;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 5px;
+    background-color: #004700;
+    color: white;
 }
 
 /**************************************************
@@ -242,8 +306,50 @@ ACTIVE PLAYER
     display: flex;
     flex-direction: column;
     margin: 5px;
-    /* background-color: #BFFFBF; */
-    border: 2px dashed black;
+    border: 5px dashed black;
+    border-radius: 5px;
+    background-color: #80FF80;
+}
+
+.activeName {
+    padding-left: 5px;
+    background-color: #80FF80;
+    color: black;
+}
+
+.activeInfoUl {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    padding-left: 5px;
+    background-color: #80FF80;
+    color: black;
+}
+
+.activeInfoItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 2.5px 2.5px;
+    padding: 5px;
+    width: 40%;
+    background-color: #80FF80;
+    color: black;
+}
+
+.activeInfoInfo {
+    background-color: #80FF80;
+}
+
+#activeEditButton {
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 5px;
+    padding: 5px 0px;
+    background-color: #BFFFBF;
+    color: black;
 }
 
 /**************************************************
@@ -253,7 +359,8 @@ PLAYER FORM DIALOG
 #formDialog {
     display: flex;
     flex-flow: row wrap;
-    border: 3px solid black;
+    border: 5px solid black;
+    border-radius: 3px;
     margin: 5px;
     padding: 5px;
     position: fixed;
@@ -267,6 +374,7 @@ PLAYER FORM DIALOG
 
 .formLabels {
     margin: auto;
+    color: white;
 }
 
 .formItems {
@@ -276,10 +384,12 @@ PLAYER FORM DIALOG
     background-color: #BFFFBF;
     display: flex;
     justify-content: center;
+    border-radius: 3px;
 }
 
 .formButtons {
     border: 1px solid black;
+    border-radius: 3px;
     background-color: #BFFFBF;
     margin: 5px 5% 5px 5%;
     width: 20%;
@@ -305,7 +415,7 @@ TURN TIMER
 
 .timerDiv {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-flow: row;
     position: sticky;
     top: 5px;
@@ -313,16 +423,18 @@ TURN TIMER
     background-color: #006600;
     width: 33.333%;
     max-height: 54px;
-    margin-left: 5px;
+    margin-left: 10px;
     border: 1px solid black;
+    border-radius: 3px;
+    background-color: #004700;
 }
 
 .timerH2 {
     text-align: center;
     margin: 5px;
-    background-color: #006600;
-    color: #ffffff;
     padding: 5px;
+    background-color: #004700;
+    color: white;
 }
 
 /* .timerDivMaster {
@@ -351,33 +463,50 @@ TURN TIMER
 DUNGEON MASTER MENU
 ***************************************************/
 
-.masterMenuClose {
-    display: flex;
-    align-self: flex-end;
-    justify-content: flex-end;
-    width: 33.33%;
-    margin-right: 5px;
-}
-
 .masterMenuOpen {
     display: flex;
     align-self: flex-end;
     justify-content: flex-end;
-    width: 50%;
-    margin: 0 5px 0 0;
+    margin: 0 10px 0 0;
+    position: sticky;
+    top: 5px;
+    left: 5px;
+    background-color: #004700;
 }
 
-.openMenu {
+.masterMenuClose {
+    margin-right: 5px;
+    width: 33.33%;
+    position: sticky;
+    top: 5px;
+    left: 5px;
+    background-color: #004700;
+    margin-right: 10px;
+}
+
+.openMenuBtn {
     border: 1px solid black;
+    border-radius: 3px;
     width: 100%;
     height: 54px;
+    font-size: 125%;
+    font-weight: bold;
+    color: white;
 }
 
 .masterMenu {
     display: flex;
     flex-flow: column;
     padding: 0 5px 0 0;
-    margin-left: 10px;
+    margin: 0;
     border: 1px solid black;
+    border-radius: 3px;
     width: 100%;
+    background-color: #004700;
+}
+
+.masterMenuItem {
+    background-color: #004700;
+    margin-top: 5px;
+    color: white;
 }

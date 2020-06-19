@@ -8,10 +8,17 @@ import * as ROUTES from '../../constants/routes';
 import GamePage from '../Game';
 import { MasterContext } from '../Game/MasterContext';
 
-const HomePage = () => {
+const HomePage = (props) => {
+
+    const { joinCachedLobby } = useContext(MasterContext);
 
     const [formDisplay, setFormDisplay] = useState(false);
     const [selection, setSelection] = useState('');
+
+    const cachedGame = () => {
+        joinCachedLobby()
+        props.history.push(ROUTES.GAME);
+    }
 
     const joinNewGame = (event) => {
         setSelection('join');
@@ -23,9 +30,17 @@ const HomePage = () => {
         setFormDisplay(true);
     }
 
+    const changeSelection = () => {
+        if (selection === 'create') {
+            setSelection('join');
+        } else if (selection === 'join') {
+            setSelection('create');
+        }
+    }
+
     if (formDisplay === true) {
         return (
-            <RoomForm selection={selection} />
+            <RoomForm selection={selection} changeSelection={changeSelection} />
         );
     } else {
         return (
@@ -33,7 +48,8 @@ const HomePage = () => {
                 <h1 id='homeTitle'>Welcome to my initiative tracker!</h1>
                 <p id='homeP'>Make a selection below to begin using the app:</p>
                 <div id='buttonDiv'>
-                    <button onClick={() => joinNewGame()} class='homeOptions'>Join a game</button>
+                    <button onClick={() => cachedGame()} class='homeOptions'>Join most recent game</button>
+                    <button onClick={() => joinNewGame()} class='homeOptions'>Join a new game</button>
                     <button onClick={() => createNewGame()} class='homeOptions'>Create a game</button>
                 </div>
             </div>
@@ -91,19 +107,47 @@ const RoomFormBase = (props) => {
         setRoom(event.target.value);
     }
 
+    const oppSelection = () => {
+        if (props.selection === 'create') {
+            return 'Join';
+        } else if (props.selection === 'join') {
+            return 'Create';
+        }
+    }
+
+    const labelName = () => {
+        if (props.selection === 'join') {
+            return 'Joining a new room:';
+        } else {
+            return 'Creating a new room:';
+        }
+    }
+
+    const buttonName = () => {
+        if (!isInvalid) {
+            return 'Your room code must be four digits';
+        } else {
+            return 'Enter room';
+        }
+    }
+
     const isInvalid = room > 999 && room < 10000;
 
     return (
         <form onSubmit={onSubmit} id='roomForm'>
+            <label>{labelName()}</label>
             <input
                 id='roomInput'
                 name='room'
                 placeholder='Enter your four digit code'
                 onChange={onChange}
             />
-            <button disabled={!isInvalid} type='submit' id='roomButton'>
-                Enter Room
-            </button>
+            <div class='buttonDiv'>
+                <button disabled={!isInvalid} type='submit' id='roomButton'>
+                    {buttonName()}
+                </button>
+                <button type='button' id='roomButton' onClick={() => props.changeSelection()}>{oppSelection()} a room instead</button>
+            </div>
         </form>
     );
 }
