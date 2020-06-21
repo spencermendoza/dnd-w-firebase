@@ -16,8 +16,14 @@ const HomePage = (props) => {
     const [selection, setSelection] = useState('');
 
     const cachedGame = () => {
-        joinCachedLobby()
-        props.history.push(ROUTES.GAME);
+        const cachedLobby = JSON.parse(localStorage.getItem('cacheLobby'))
+
+        if (cachedLobby) {
+            joinCachedLobby()
+            props.history.push(ROUTES.GAME);
+        } else {
+            alert("You don't currently have a cached lobby. Join one first.")
+        }
     }
 
     const joinNewGame = (event) => {
@@ -49,8 +55,8 @@ const HomePage = (props) => {
                 <p id='homeP'>Make a selection below to begin using the app:</p>
                 <div id='buttonDiv'>
                     <button onClick={() => cachedGame()} class='homeOptions'>Join most recent game</button>
-                    <button onClick={() => joinNewGame()} class='homeOptions'>Join a new game</button>
-                    <button onClick={() => createNewGame()} class='homeOptions'>Create a game</button>
+                    <button onClick={() => joinNewGame()} class='homeOptions'>Join an existing game</button>
+                    <button onClick={() => createNewGame()} class='homeOptions'>Create a new game</button>
                 </div>
             </div>
         );
@@ -117,7 +123,7 @@ const RoomFormBase = (props) => {
 
     const labelName = () => {
         if (props.selection === 'join') {
-            return 'Joining a new room:';
+            return 'Joining an existing room:';
         } else {
             return 'Creating a new room:';
         }
@@ -131,7 +137,7 @@ const RoomFormBase = (props) => {
         }
     }
 
-    const isInvalid = room > 999 && room < 10000;
+    const isInvalid = room > 998 && room < 10000;
 
     return (
         <form onSubmit={onSubmit} id='roomForm'>

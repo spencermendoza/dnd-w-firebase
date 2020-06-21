@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import { FAKE_PLAYERS } from '../Game/PLAYER/playerHelpers';
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -46,7 +47,13 @@ class Firebase {
 
     getStaged = (lobby) => this.db.ref(`games/${lobby}/staged`);
 
-    getUser = () => this.auth.currentUser.uid;
+    getUser = () => {
+        if (this.auth.currentUser) {
+            return this.auth.currentUser.uid;
+        } else {
+            return null;
+        }
+    }
 
     doesLobbyExist = (lobby) => {
         let lobbyRef = this.gameLobby(lobby).once('value')
@@ -73,6 +80,14 @@ class Firebase {
             staged: newGame.staged,
         });
         this.addPlayers(newGame.combatants, newGame.lobbyNumber);
+    }
+
+    resetLobby = (list) => {
+        for (let i = 0; i < list.length; i++) {
+            this.db.ref(`games/999/combatants/${list[i].name}`).set({
+                ...list[i]
+            })
+        }
     }
 
     addPlayers = (array, lobby) => {
@@ -108,6 +123,10 @@ class Firebase {
     updateTime = (lobby, minutes, seconds) => {
         this.db.ref(`games/${lobby}/minutes`).set(minutes);
         this.db.ref(`games/${lobby}/seconds`).set(seconds);
+    }
+
+    updateMaster = (uid) => {
+        this.db.ref(`games/999/master`).set(uid)
     }
 }
 

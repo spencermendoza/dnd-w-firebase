@@ -81,14 +81,55 @@ class GameProviderBase extends Component {
     joinCachedLobby = () => {
         const rememberedLobby = JSON.parse(localStorage.getItem('cacheLobby'));
 
-        if (rememberedLobby) {
+        if (rememberedLobby && this.props.firebase.auth) {
             this.checkGame(rememberedLobby).then(result => {
                 if (result) {
                     this.joinGame(rememberedLobby)
+                    return true;
                 }
             })
         } else {
-            console.log('There is no lobby here');
+            alert('There is no lobby here');
+            console.log(rememberedLobby)
+            return false;
+        }
+    }
+
+    // resetPlayers = () => {
+    //     FAKE_PLAYERS[1].id = this.state.currentUser;
+    //     let longer = [];
+    //     let shorter = [];
+    //     if (FAKE_PLAYERS.length > this.state.game.combatants) {
+    //         console.log('fake players is longer')
+    //         longer = FAKE_PLAYERS;
+    //         shorter = this.state.game.combatants;
+    //     } else {
+    //         console.log('combatants is longer')
+    //         longer = this.state.game.combatants;
+    //         shorter = FAKE_PLAYERS;
+    //     }
+
+    //     for (i = 0 ; i < longer.length; i++) {
+    //         for (j = 0; j < shorter; j++) {
+    //             if (longer[i].id === shorter[j].id) {
+
+    //             }
+    //         }
+    //     }
+    // }
+
+    toggleMasterControl = () => {
+        // localStorage.clear();
+        var currentUser = this.state.currentUser;
+        const randomUser = 1000;
+        if (this.state.master) {
+            this.props.firebase.updateMaster(randomUser)
+            this.joinGame(999)
+            window.location.reload(false)
+        } else {
+            this.props.firebase.updateMaster(currentUser)
+            this.joinGame(999)
+            window.location.reload(false)
         }
     }
 
@@ -126,7 +167,10 @@ class GameProviderBase extends Component {
     joinGame = (lobby) => {
         this.props.firebase.gameLobby(lobby).on('value', snapshot => {
             const lobbyObject = snapshot.val();
-            let currentUser = this.props.firebase.getUser();
+            let currentUser = '';
+            if (this.props.firebase.getUser() !== null) {
+                currentUser = this.props.firebase.getUser();
+            }
             let newGame = Game.create({
                 lobbyNumber: lobbyObject.lobbyNumber,
                 master: lobbyObject.master,
@@ -373,7 +417,7 @@ class GameProviderBase extends Component {
             }
             if (seconds === 0) {
                 if (minutes === 0) {
-                    this.setState({ game: { ...this.state.game, minutes: 0, seconds: 10 } });
+                    this.setState({ game: { ...this.state.game, minutes: 2, seconds: 0 } });
                     this.props.firebase.updateTime(this.state.lobbyNumber, this.state.game.minutes, this.state.game.seconds);
                     this.nextHighestInit()
                 } else {
@@ -394,8 +438,8 @@ class GameProviderBase extends Component {
         this.setState({
             game: {
                 ...this.state.game,
-                minutes: 0,
-                seconds: 10,
+                minutes: 2,
+                seconds: 0,
             },
             timerName: 'Start',
         });
@@ -403,7 +447,7 @@ class GameProviderBase extends Component {
             p.active = false
             this.props.firebase.updatePlayer(p, this.state.lobbyNumber, p);
         })
-        this.props.firebase.updateTime(this.state.lobbyNumber, 0, 10);
+        this.props.firebase.updateTime(this.state.lobbyNumber, 2, 0);
     }
 
     resetState = () => {
@@ -463,6 +507,8 @@ class GameProviderBase extends Component {
                 handleDialogRemoveClick: this.handleDialogRemoveClick,
                 masterViewStagedPlayer: this.masterViewStagedPlayer,
                 joinCachedLobby: this.joinCachedLobby,
+                toggleMasterControl: this.toggleMasterControl,
+                resetPlayers: this.resetPlayers,
             }}
         >{this.props.children}</Provider>
     }

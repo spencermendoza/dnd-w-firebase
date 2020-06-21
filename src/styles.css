@@ -77,6 +77,7 @@ NAVIGATION
 }
 
 .navLink {
+    text-decoration: none;
     background-color: #80FF80;
 }
 
@@ -92,6 +93,143 @@ LANDING
 
 #intro {
     padding: 0px 20px 0px 20px;
+}
+
+/**************************************************
+ACCOUNT
+***************************************************/
+.accountDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    margin: 20px auto 0 auto;
+}
+
+.accountDiv h1 {
+    margin: auto;
+}
+
+.accountDiv p {
+    margin: 15px auto;
+    font-weight: bold;
+}
+
+/**************************************************
+SIGN IN
+***************************************************/
+
+.signInDiv {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.signInDiv h1 {
+    margin: 10px auto 10px auto;
+}
+
+.signInForm {
+    display: flex;
+    flex-flow: row wrap;
+    margin: auto 0 auto 5px;
+}
+
+.signInForm input {
+    border-radius: 3px;
+    margin: 5px;
+}
+
+.signInForm button {
+    border: 1px solid black;
+    color: white;
+    padding: 3px;
+    margin: 10px 10px 0 10px;
+    width: 25%;
+    flex-basis: 100%;
+}
+
+.signInForm button:disabled {
+    color: grey;
+    border: 1px solid grey;
+}
+
+.pwForgetLink, .signUpLink {
+    margin-left: 10px;
+    width: 100%;
+    margin: 10px 0 0 10px;
+}
+
+/**************************************************
+SIGN UP
+***************************************************/
+
+.signUpPageDiv {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.signUpPageDiv h1 {
+    margin: 10px auto 10px auto;
+}
+
+.signUpForm {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+.signUpForm input {
+    margin: 2.5px 0;
+    border-radius: 3px;
+    padding: 3px;
+}
+
+.signUpForm button {
+    border: 1px solid black;
+    color: white;
+    padding: 3px;
+    margin: 10px;
+    width: 25%;
+}
+
+.signUpForm button:disabled {
+    color: grey;
+    border: 1px solid grey;
+}
+
+/**************************************************
+FORGOT PASSWORD
+***************************************************/
+
+.pwForgetForm {
+    margin: auto;
+    display: flex;
+}
+
+.pwForgetForm input {
+    padding: 5px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.pwForgetForm button {
+    border: 1px solid black;
+    width: 40%;
+    color: white;
+    margin: 0 0 0 5px;
+    padding: 3px;
+}
+
+.pwForgetDiv {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.pwForgetDiv h1 {
+    width: 80%;
+    margin: 10px auto 10px auto;
 }
 
 /**************************************************
@@ -146,12 +284,16 @@ HOME
     margin: 15px 5px;
     text-align: center;
     padding: 5px;
-    color: white;
+    /* color: white; */
     border-radius: 3px;
 }
 
+#roomInput textarea {
+    color: black;
+}
+
 ::placeholder {
-    color: white;
+    /* color: white; */
 }
 
 .buttonDiv {
@@ -167,8 +309,14 @@ HOME
     color: white;
 }
 
-#roomButton :focus {
-    border: none;
+/**************************************************
+TOGGLE MASTER
+***************************************************/
+
+.toggleMasterDiv {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0 5px 5px 5px;
 }
 
 /**************************************************

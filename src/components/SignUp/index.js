@@ -5,7 +5,7 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignUpPage = () => (
-    <div>
+    <div class='signUpPageDiv'>
         <h1>Sign Up</h1>
         <SignUpForm />
     </div>
@@ -74,7 +74,7 @@ class SignUpFormBase extends Component {
             username === '';
 
         return (
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={this.onSubmit} class='signUpForm'>
                 <input
                     name='username'
                     value={username}
@@ -114,7 +114,7 @@ class SignUpFormBase extends Component {
 }
 
 const SignUpLink = () => (
-    <p>
+    <p class='signUpLink'>
         Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
     </p>
 );

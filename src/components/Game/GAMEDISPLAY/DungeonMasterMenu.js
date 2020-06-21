@@ -20,7 +20,7 @@ const DungeonMasterMenu = () => {
     const checkForStaged = () => {
         if (staged) {
             return (
-                <li onClick={masterViewStagedPlayer}>View staged player</li>
+                <li onClick={masterViewStagedPlayer} class='masterMenuItem'>View staged player</li>
             )
         }
     }

@@ -7,7 +7,7 @@ const cronan = Player.create({
     initiative: 1,
     armor: 18,
     owner: '',
-    id: 'GbJ4KydcsuQ7oPGkPPejUXPruEC3',
+    id: '0',
     active: false
 })
 
@@ -18,7 +18,7 @@ const balazar = Player.create({
     initiative: 15,
     armor: 20,
     owner: '',
-    id: 'XOwThCreVwOHAWefriYJDaeXv212',
+    id: '1',
     active: false,
 })
 
@@ -29,7 +29,7 @@ const marsk = Player.create({
     initiative: 7,
     armor: 19,
     owner: '',
-    id: 'bVcIeXLtcWY5UtmtlezQ95upKvF3',
+    id: '2',
     active: false,
 })
 
@@ -40,7 +40,7 @@ const barri = Player.create({
     initiative: 20,
     armor: 15,
     owner: '',
-    id: 'hDwNrNpaJlW9M5EaLOOeS6AYDBF2',
+    id: '3',
     active: false,
 });
 
