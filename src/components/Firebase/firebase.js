@@ -82,14 +82,6 @@ class Firebase {
         this.addPlayers(newGame.combatants, newGame.lobbyNumber);
     }
 
-    resetLobby = (list) => {
-        for (let i = 0; i < list.length; i++) {
-            this.db.ref(`games/999/combatants/${list[i].name}`).set({
-                ...list[i]
-            })
-        }
-    }
-
     addPlayers = (array, lobby) => {
         for (let i = 0; i < array.length; i++) {
             this.db.ref(`games/${lobby}/combatants/${array[i].name}`).set({
