@@ -87,7 +87,7 @@ const RoomFormBase = (props) => {
     const createNewGame = (room) => {
         checkGame(room).then(result => {
             if (result) {
-                alert('this room already exists, douchebag');
+                alert('this room already exists, please try another one');
             } else {
                 alert('this is a fresh lobby');
                 createGame(room);

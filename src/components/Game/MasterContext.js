@@ -95,42 +95,44 @@ class GameProviderBase extends Component {
         }
     }
 
-    // resetPlayers = () => {
-    //     FAKE_PLAYERS[1].id = this.state.currentUser;
-    //     let longer = [];
-    //     let shorter = [];
-    //     if (FAKE_PLAYERS.length > this.state.game.combatants) {
-    //         console.log('fake players is longer')
-    //         longer = FAKE_PLAYERS;
-    //         shorter = this.state.game.combatants;
-    //     } else {
-    //         console.log('combatants is longer')
-    //         longer = this.state.game.combatants;
-    //         shorter = FAKE_PLAYERS;
-    //     }
-
-    //     for (i = 0 ; i < longer.length; i++) {
-    //         for (j = 0; j < shorter; j++) {
-    //             if (longer[i].id === shorter[j].id) {
-
-    //             }
-    //         }
-    //     }
-    // }
-
     toggleMasterControl = () => {
-        // localStorage.clear();
         var currentUser = this.state.currentUser;
         const randomUser = 1000;
         if (this.state.master) {
             this.props.firebase.updateMaster(randomUser)
-            this.joinGame(999)
-            window.location.reload(false)
+            this.setState({ master: false });
         } else {
             this.props.firebase.updateMaster(currentUser)
-            this.joinGame(999)
-            window.location.reload(false)
+            this.setState({ master: true });
         }
+    }
+
+    resetPlayers = () => {
+        var combatants = {}
+        this.props.firebase.gamePlayers(999).once('value').then(snapshot => {
+            const charactersObj = snapshot.val();
+            combatants = this.makeObjectsPlayers(charactersObj)
+            var removeList = this.makeRemoveList(combatants);
+            for (let i = 0; i < removeList.length; i++) {
+                this.props.firebase.removePlayer(999, removeList[i]);
+            }
+        })
+    }
+
+    makeRemoveList = (currentList) => {
+        var newList = [];
+        currentList.forEach(character => {
+            for (let i = 0; i <= FAKE_PLAYERS.length; i++) {
+                if (i === FAKE_PLAYERS.length) {
+                    newList.push(character);
+                    break;
+                }
+                if (character.name === FAKE_PLAYERS[i].name) {
+                    break;
+                }
+            }
+        })
+        return newList;
     }
 
     /////////////// FIREBASE DEPENDENT FUNCTIONS ///////////////////
@@ -311,10 +313,17 @@ class GameProviderBase extends Component {
     }
 
     masterAddPlayers = (player) => {
-        let playerList = this.state.game.combatants;
-        playerList.push(player);
-        this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
-        this.resetDialogState();
+        this.props.firebase.gamePlayers(this.state.lobbyNumber).once('value').then(snapshot => {
+            var characterList = snapshot.val();
+            if (characterList.length < 20) {
+                let playerList = this.state.game.combatants;
+                playerList.push(player);
+                this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
+                this.resetDialogState();
+            } else {
+                alert('There are too many players in this lobby, please remove some before adding more.')
+            }
+        })
     }
 
     handleUpdatePlayer = (player) => {

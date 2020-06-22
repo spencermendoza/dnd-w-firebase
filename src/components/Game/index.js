@@ -34,12 +34,9 @@ const GamePage = () => {
 
     const isTestingLobby = () => {
         if (lobbyNumber === '999') {
-            if (firstTime === false) {
-                console.log(firstTime)
-            } else {
-                // resetPlayers()
-                setFirstTime(false)
-                console.log(firstTime)
+            if (firstTime) {
+                resetPlayers()
+                setFirstTime(false);
             }
             return <ToggleMasterSwitch />
         }
