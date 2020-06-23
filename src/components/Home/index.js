@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Component } from 'react';
 import '../../styles.css';
 
 import { withRouter } from 'react-router-dom';

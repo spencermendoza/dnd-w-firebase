@@ -33,6 +33,7 @@ a {
 button {
     background: none;
     border: none;
+    border-radius: 3px;
 }
 
 hr {
@@ -51,6 +52,15 @@ ul {
     list-style: none;
 }
 
+input {
+    font-size: 16px;
+    border-radius: 3px;
+}
+
+::placeholder {
+    color: black;
+}
+
 /**************************************************************************
 NAVIGATION
 **************************************************************************/
@@ -59,6 +69,7 @@ NAVIGATION
     background-color: #80FF80;
     margin: 0;
     padding: 5px 0px;
+    border-bottom:3px solid #004700;
 }
 
 #navUl {
@@ -253,20 +264,6 @@ HOME
     color: white;
 }
 
-#buttonDiv {
-    display: flex;
-    justify-content: space-around;
-}
-
-.homeOptions {
-    margin: 5px 0px;
-    border: 1px solid black;
-    border-radius: 3px;
-    padding: 3px;
-    width: 40%;
-    color: white;
-}
-
 #roomForm {
     display: flex;
     justify-content: space-around;
@@ -292,20 +289,27 @@ HOME
     color: black;
 }
 
-::placeholder {
-    /* color: white; */
+#buttonDiv {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 75%;
 }
 
-.buttonDiv {
-    display: flex;
-    justify-content: space-around;
+.homeOptions {
+    margin: 10px 0px;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 3px;
+    width: 100%;
+    color: white;
+    height: 35px;
 }
 
 #roomButton {
     border: 1px solid black;
     width: 40%;
     height: 50px;
-    /* margin: 10px 25% 0% 25%; */
     color: white;
 }
 
@@ -344,6 +348,34 @@ GAME
     background-color: #006600;
 }
 
+.timerMaster {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+    position: sticky;
+    top: 5px;
+    right: 0;
+    background-color: transparent;
+    margin: auto;
+}
+
+.playerOptions {
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: column;
+    width: 100%;
+}
+
+#addButton {
+    border: 1px solid white;
+    border-radius: 3px;
+    width: 75%;
+    margin: 5px auto;
+    padding: 5px;
+    background-color: #004700;
+    color: white;
+}
+
 /**************************************************
 PLAYER SORT MENU
 ***************************************************/
@@ -351,8 +383,9 @@ PLAYER SORT MENU
 #sortButton {
     border: 1px solid white;
     border-radius: 3px;
-    width: 90%;
-    margin: 5px 5% 5px 5%;
+    width: 75%;
+    margin: 5px auto;
+    margin-top: 10px;
     padding: 5px;
     background-color: #004700;
     color: white;
@@ -430,18 +463,6 @@ PLAYER CARDS
     border-radius: 3px;
     margin: 5px;
     padding: 5px 0px;
-    background-color: #004700;
-    color: white;
-}
-
-#addButton {
-    border: 1px solid white;
-    border-radius: 3px;
-    background-color: #BFFFBF;
-    height: 25px;
-    width: 90%;
-    margin: auto;
-    margin-bottom: 5px;
     background-color: #004700;
     color: white;
 }
@@ -564,12 +585,8 @@ TURN TIMER
 .timerDiv {
     display: flex;
     justify-content: space-around;
-    flex-flow: row;
-    position: sticky;
-    top: 5px;
-    right: 5px;
     background-color: #006600;
-    width: 33.333%;
+    width: 45%;
     max-height: 54px;
     margin-left: 10px;
     border: 1px solid black;
@@ -616,18 +633,12 @@ DUNGEON MASTER MENU
     align-self: flex-end;
     justify-content: flex-end;
     margin: 0 10px 0 0;
-    position: sticky;
-    top: 5px;
-    left: 5px;
     background-color: #004700;
 }
 
 .masterMenuClose {
     margin-right: 5px;
-    width: 33.33%;
-    position: sticky;
-    top: 5px;
-    left: 5px;
+    width: 45%;
     background-color: #004700;
     margin-right: 10px;
 }
@@ -657,4 +668,215 @@ DUNGEON MASTER MENU
     background-color: #004700;
     margin-top: 5px;
     color: white;
+}
+
+@media only screen and (min-width: 992px) {
+
+/**************************************************
+NAVIGATION
+***************************************************/
+
+#navUl {
+    justify-content: flex-start;
+    margin-left: 15px;
+}
+
+.navLink {
+    margin: 15px;
+}
+
+/**************************************************
+LANDING
+***************************************************/
+
+#intro {
+    margin: 50px auto 0 auto;
+    width: 30%;
+    color: white;
+    font-size: 20px;
+}
+
+/**************************************************
+SIGN IN
+***************************************************/
+
+.signInDiv {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.signInDiv h1 {
+    margin-left: 15px;
+    font-size: 3.5em;
+}
+
+.signInForm {
+    flex-direction: row;
+    max-width: 75%;
+}
+
+.signInForm input {
+    width: 25%;
+}
+
+.signInForm button {
+    max-width: 10%;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+/**************************************************
+FORGOT PASSWORD
+**************************************************/
+
+.pwForgetDiv {
+    flex-direction: column;
+}
+
+.pwForgetDiv h1 {
+    width: 35%;
+    margin: 30px auto;
+}
+
+/**************************************************
+SIGN UP
+***************************************************/
+
+.signUpPageDiv {
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.signUpForm {
+    flex-direction: column;
+}
+
+.signUpForm input {
+    max-width: 25%;
+    margin: 10px 10px;
+}
+
+/**************************************************
+HOME
+**************************************************/
+
+#homeDiv {
+    margin: 30px;
+}
+
+#homeTitle {
+    font-size: 3.5em;
+}
+
+#homeP {
+    font-size: 1.5em;
+}
+
+#buttonDiv {
+    margin-top: 40px;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.homeOptions {
+    max-width: 20%;
+    margin: 10px 10px;
+}
+
+/**************************************************
+HOME: JOIN/CREATE ROOM
+**************************************************/
+
+#roomForm {
+    justify-content: space-evenly;
+    flex-flow: row wrap;
+    margin-top: 30px;
+}
+
+#roomForm label {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#roomForm input {
+    width: 45%;
+    margin: 30px;
+}
+
+.buttonDiv {
+    width: 45%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+#roomButton {
+    max-width: 20%;
+    margin: 30px 10px;
+
+}
+
+/**************************************************
+GAME LOBBY
+**************************************************/
+
+#gameSpan {
+    justify-content: flex-start;
+    flex-flow: row wrap;
+}
+
+/**************************************************
+MASTER MENU
+**************************************************/
+
+.masterMenuClose {
+    width: 5%;
+    margin-left: 10px;
+}
+
+.masterMenuOpen {
+    margin-left: 10px;
+}
+
+.openMenuBtn {
+    /* width: 20%; */
+}
+
+/**************************************************
+TURN TIMER
+**************************************************/
+
+.timerDiv {
+    width: 5%;
+    margin-left: 85%;
+}
+
+/**************************************************
+PLAYER SORT MENU
+**************************************************/
+
+#sortButton {
+    align-self: flex-start;
+    max-width: 10%;
+}
+
+/**************************************************
+PLAYER ADD BUTTON
+**************************************************/
+
+#addButton {
+    align-self: flex-start;
+    /* max-width: 10%; */
+}
+
+
+
+
+
+
+
+
+
+
 }

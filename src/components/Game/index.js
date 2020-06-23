@@ -51,15 +51,19 @@ const GamePage = () => {
 
                 {loading && <div>Loading...</div>}
 
-                <TurnTimer />
-                {masterMenu()}
-                <PlayerSortMenu />
-                {open
-                    ? <PlayerFormDialog />
-                    : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
+                <div class='timerMaster'>
+                    <TurnTimer />
+                    {masterMenu()}
+                </div>
+                <div class='playerOptions'>
+                    <PlayerSortMenu />
+                    {open
+                        ? <PlayerFormDialog />
+                        : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
+                </div>
                 <PlayerCardList />
             </span>
-        </div>
+        </div >
     );
 }
 

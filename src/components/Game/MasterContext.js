@@ -88,10 +88,6 @@ class GameProviderBase extends Component {
                     return true;
                 }
             })
-        } else {
-            alert('There is no lobby here');
-            console.log(rememberedLobby)
-            return false;
         }
     }
 
@@ -313,17 +309,18 @@ class GameProviderBase extends Component {
     }
 
     masterAddPlayers = (player) => {
-        this.props.firebase.gamePlayers(this.state.lobbyNumber).once('value').then(snapshot => {
-            var characterList = snapshot.val();
-            if (characterList.length < 20) {
-                let playerList = this.state.game.combatants;
-                playerList.push(player);
-                this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
-                this.resetDialogState();
-            } else {
-                alert('There are too many players in this lobby, please remove some before adding more.')
-            }
-        })
+        let playerList = this.state.game.combatants;
+        playerList.push(player);
+        this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
+        this.resetDialogState();
+        // this.props.firebase.gamePlayers(this.state.lobbyNumber).once('value').then(snapshot => {
+        //     var characterList = snapshot.val();
+        //     if (characterList.length < 20) {
+
+        //     } else {
+        //         alert('There are too many players in this lobby, please remove some before adding more.')
+        //     }
+        // })
     }
 
     handleUpdatePlayer = (player) => {
