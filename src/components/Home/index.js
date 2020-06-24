@@ -98,15 +98,21 @@ const RoomFormBase = (props) => {
     }
 
     const joinNewGame = (room) => {
-        checkGame(room).then(result => {
-            if (result) {
-                alert('welcome to game number ' + room);
-                joinGame(room)
-                props.history.push(ROUTES.GAME);
-            } else {
-                alert('this room doesnt exist: ' + room);
-            }
-        })
+        if (room >= 1000) {
+            checkGame(room).then(result => {
+                if (result) {
+                    alert('welcome to game number ' + room);
+                    joinGame(room)
+                    props.history.push(ROUTES.GAME);
+                } else {
+                    alert('this room doesnt exist: ' + room);
+                }
+            })
+        } else {
+            createGame(room)
+            joinGame(room)
+            props.history.push(ROUTES.GAME)
+        }
     }
 
     const onChange = event => {

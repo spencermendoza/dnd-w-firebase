@@ -103,18 +103,6 @@ class GameProviderBase extends Component {
         }
     }
 
-    resetPlayers = () => {
-        var combatants = {}
-        this.props.firebase.gamePlayers(999).once('value').then(snapshot => {
-            const charactersObj = snapshot.val();
-            combatants = this.makeObjectsPlayers(charactersObj)
-            var removeList = this.makeRemoveList(combatants);
-            for (let i = 0; i < removeList.length; i++) {
-                this.props.firebase.removePlayer(999, removeList[i]);
-            }
-        })
-    }
-
     makeRemoveList = (currentList) => {
         var newList = [];
         currentList.forEach(character => {
@@ -172,7 +160,7 @@ class GameProviderBase extends Component {
             let newGame = Game.create({
                 lobbyNumber: lobbyObject.lobbyNumber,
                 master: lobbyObject.master,
-                combatants: this.makeObjectsPlayers(lobbyObject.combatants),
+                combatants: lobbyObject.combatants ? this.makeObjectsPlayers(lobbyObject.combatants) : [],
                 minutes: lobbyObject.minutes,
                 seconds: lobbyObject.seconds,
             });

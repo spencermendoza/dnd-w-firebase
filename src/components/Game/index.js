@@ -18,7 +18,8 @@ const GamePage = () => {
         handleAddClick,
         loading,
         master,
-        resetPlayers,
+        createGame,
+        joinGame,
     } = useContext(MasterContext);
 
     const { lobbyNumber } = game;
@@ -34,10 +35,11 @@ const GamePage = () => {
 
     const isTestingLobby = () => {
         if (lobbyNumber === '999') {
-            if (firstTime) {
-                resetPlayers()
-                setFirstTime(false);
-            }
+            // if (firstTime) {
+            //     createGame(999);
+            //     joinGame(999);
+            //     setFirstTime(false);
+            // }
             return <ToggleMasterSwitch />
         }
     }
@@ -46,22 +48,26 @@ const GamePage = () => {
     return (
         <div id='gameDiv'>
             <h1 id='gameLobby'>Lobby number: {loading ? <h1>loading...</h1> : game.lobbyNumber}</h1>
-            {isTestingLobby()}
             <span id='gameSpan'>
 
                 {loading && <div>Loading...</div>}
 
-                <div class='timerMaster'>
-                    <TurnTimer />
-                    {masterMenu()}
+                <div class='topOptions'>
+                    <div class='timerMaster'>
+                        {masterMenu()}
+                        <TurnTimer />
+                        {isTestingLobby()}
+                    </div>
+                    <div class='playerOptions'>
+                        <PlayerSortMenu />
+                        {open
+                            ? <PlayerFormDialog />
+                            : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
+                    </div>
                 </div>
-                <div class='playerOptions'>
-                    <PlayerSortMenu />
-                    {open
-                        ? <PlayerFormDialog />
-                        : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
+                <div class='playerCardList'>
+                    <PlayerCardList />
                 </div>
-                <PlayerCardList />
             </span>
         </div >
     );

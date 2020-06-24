@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import PlayerCard from './PlayerCard';
 import { MasterContext } from '../MasterContext';
+import '../../../styles.css';
 
 const PlayerCardList = () => {
     const {
@@ -14,12 +15,15 @@ const PlayerCardList = () => {
     const playerCheck = () => {
         if (combatants.length > 0) {
             return (
-                sortPlayersBy(combatants, sortBy).map(player => (
-                    <PlayerCard
-                        player={player}
-                        key={player.id}
-                    />
-                )));
+                <div class='testCardListDiv'>
+                    {sortPlayersBy(combatants, sortBy).map(player => (
+                        <PlayerCard
+                            player={player}
+                            key={player.id}
+                        />
+                    ))}
+                </div>
+            );
         } else {
             return (<><span>There are no players in this game! Add some players to get started!</span><hr /></>);
         }

@@ -28,6 +28,8 @@ BASE STYLES
 
 a {
     text-decoration: none;
+    color: black;
+    background-color: #80FF80;
 }
 
 button {
@@ -75,7 +77,7 @@ NAVIGATION
 #navUl {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     padding-left: 0;
     margin: 0;
     padding: 5px 0px;
@@ -84,6 +86,11 @@ NAVIGATION
 
 .navLi {
     text-decoration: none;
+    background-color: #80FF80;
+    color: black;
+}
+
+.active {
     background-color: #80FF80;
 }
 
@@ -169,6 +176,24 @@ SIGN IN
     margin-left: 10px;
     width: 100%;
     margin: 10px 0 0 10px;
+}
+
+/**************************************************
+SIGN OUT
+***************************************************/
+
+#signOut {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    font-style: initial;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: .94em;
+    padding: 0;
+}
+
+#signOut :focus {
+    color: purple;
 }
 
 /**************************************************
@@ -320,7 +345,10 @@ TOGGLE MASTER
 .toggleMasterDiv {
     display: flex;
     flex-flow: row wrap;
-    margin: 0 5px 5px 5px;
+    margin:5px;
+    width: 100%;
+    justify-content: center;
+    order: -1;
 }
 
 /**************************************************
@@ -350,13 +378,18 @@ GAME
 
 .timerMaster {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
     width: 75%;
     position: sticky;
     top: 5px;
     right: 0;
-    background-color: transparent;
+    /* background-color: transparent; */
     margin: auto;
+}
+
+.topOptions {
+    width: 100%;
 }
 
 .playerOptions {
@@ -379,6 +412,8 @@ GAME
 /**************************************************
 PLAYER SORT MENU
 ***************************************************/
+
+
 
 #sortButton {
     border: 1px solid white;
@@ -417,6 +452,10 @@ PLAYER SORT MENU
 /**************************************************
 PLAYER CARDS
 ***************************************************/
+
+.playerCardList {
+    z-index: =1;
+}
 
 .cardDiv {
     display: flex;
@@ -634,6 +673,8 @@ DUNGEON MASTER MENU
     justify-content: flex-end;
     margin: 0 10px 0 0;
     background-color: #004700;
+    padding: 5px;
+    border: 1px solid black;
 }
 
 .masterMenuClose {
@@ -658,7 +699,6 @@ DUNGEON MASTER MENU
     flex-flow: column;
     padding: 0 5px 0 0;
     margin: 0;
-    border: 1px solid black;
     border-radius: 3px;
     width: 100%;
     background-color: #004700;
@@ -683,6 +723,10 @@ NAVIGATION
 
 .navLink {
     margin: 15px;
+}
+
+#signOut {
+    margin: 0 15px;
 }
 
 /**************************************************
@@ -822,52 +866,115 @@ GAME LOBBY
 **************************************************/
 
 #gameSpan {
-    justify-content: flex-start;
+    display: flex;
+    justify-content: center;
+}
+
+.playerCardList {
+    display: flex;
+    margin: 0;
+    justify-content: space-evenly;
     flex-flow: row wrap;
+    width: 55%;
+}
+
+.testCardListDiv {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
+    position: relative;
+    top: -60px;
+}
+
+.topOptions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: sticky;
+    top: 5px;
+    z-index: 0;
+    background-color: transparent;
+    height: 70px;
 }
 
 /**************************************************
-MASTER MENU
+MASTER MENU/TURN TIMER
 **************************************************/
 
+.timerMaster {
+    align-items: flex-start;
+    margin: 0;
+    width: 20%;
+}
+
 .masterMenuClose {
-    width: 5%;
     margin-left: 10px;
 }
 
 .masterMenuOpen {
     margin-left: 10px;
+    padding: 5px;
+    width: 45%;
+    position: absolute;
+    top: 0;
 }
-
-.openMenuBtn {
-    /* width: 20%; */
-}
-
-/**************************************************
-TURN TIMER
-**************************************************/
 
 .timerDiv {
-    width: 5%;
-    margin-left: 85%;
+    position: absolute;
+    left: 50%;
+    top: 0;
+}
+
+.toggleMasterDiv {
+    order: 1;
 }
 
 /**************************************************
-PLAYER SORT MENU
+PLAYER SORT MENU/ADD BUTTON
 **************************************************/
 
-#sortButton {
-    align-self: flex-start;
-    max-width: 10%;
+.playerOptions {
+    width: 20%;
+    margin-right: 10px;
 }
 
-/**************************************************
-PLAYER ADD BUTTON
-**************************************************/
+#formDialog {
+    width: 19.3%;
+    align-self: flex-end;
+    position: absolute;
+    z-index: 2;
+    left: 79.5%;
+    top: 33px;
+    /* top: 70%; */
+    margin: 0;
+    box-shadow: none;
+}
 
 #addButton {
-    align-self: flex-start;
-    /* max-width: 10%; */
+    width: 20%;
+    top: 30px;
+    position: absolute;
+}
+
+#sortButton {
+    margin-top: 0;
+    width: 20%;
+    top: 0;
+    position: absolute;
+}
+
+#sortUl {
+    position: absolute;
+    top: 0;
+    width: 20%;
+    height: 15px;
+    margin: 0;
+}
+
+#sortOptions {
+    height: 100%;
+    margin: 0 10px;
 }
 
 
