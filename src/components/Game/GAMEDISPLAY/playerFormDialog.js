@@ -53,9 +53,9 @@ class PlayerFormDialog extends Component {
         } = this.context;
         const { player, open } = playerDialog;
 
-        if (!open) {
-            return null;
-        }
+        // if (!open) {
+        //     return null;
+        // }
 
         return (
             <form id='formDialog'>

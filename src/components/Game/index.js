@@ -35,11 +35,6 @@ const GamePage = () => {
 
     const isTestingLobby = () => {
         if (lobbyNumber === '999') {
-            // if (firstTime) {
-            //     createGame(999);
-            //     joinGame(999);
-            //     setFirstTime(false);
-            // }
             return <ToggleMasterSwitch />
         }
     }
@@ -52,18 +47,16 @@ const GamePage = () => {
 
                 {loading && <div>Loading...</div>}
 
-                <div class='topOptions'>
-                    <div class='timerMaster'>
-                        {masterMenu()}
-                        <TurnTimer />
-                        {isTestingLobby()}
-                    </div>
-                    <div class='playerOptions'>
-                        <PlayerSortMenu />
-                        {open
-                            ? <PlayerFormDialog />
-                            : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
-                    </div>
+                {isTestingLobby()}
+                <div class='timerMaster'>
+                    {masterMenu()}
+                    <TurnTimer />
+                </div>
+                <div class='playerOptions'>
+                    <PlayerSortMenu />
+                    {open
+                        ? <PlayerFormDialog />
+                        : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
                 </div>
                 <div class='playerCardList'>
                     <PlayerCardList />
