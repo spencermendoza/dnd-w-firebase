@@ -107,6 +107,7 @@ LANDING
     display: flex;
     justify-content: center;
     padding-top: 5px;
+    color: white;
 }
 
 #intro {
@@ -385,17 +386,20 @@ PLAYER FORM DIALOG
 #formDialog {
     display: flex;
     flex-flow: row wrap;
-    border: 5px solid black;
+    justify-content: space-around;
     border-radius: 3px;
-    margin: 5px;
+    margin:  5px;
     padding: 5px;
     position: fixed;
     z-index: 1;
-    top: 100px;
+    top: 50%;
     left: 0px;
+    transform: translate(0%, -65%);
     height: 421px;
+    border: 5px solid black;
     box-shadow: 5px 5px 5px;
-    justify-content: space-around;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .formLabels {
@@ -690,7 +694,6 @@ LANDING
 #intro {
     margin: 50px auto 0 auto;
     width: 30%;
-    color: white;
     font-size: 20px;
 }
 
