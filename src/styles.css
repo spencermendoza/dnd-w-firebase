@@ -314,9 +314,10 @@ HOME
     color: black;
 }
 
-#buttonDiv {
+.buttonDiv {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-around;
     margin: auto;
     width: 75%;
 }
@@ -669,8 +670,9 @@ NAVIGATION
 ***************************************************/
 
 #navUl {
-    justify-content: flex-start;
+    justify-content: flex-end;
     margin-left: 15px;
+    padding-right: 2.5%;
 }
 
 .navLink {
@@ -803,7 +805,6 @@ HOME: JOIN/CREATE ROOM
 
 .buttonDiv {
     width: 45%;
-    display: flex;
     justify-content: flex-start;
 }
 
