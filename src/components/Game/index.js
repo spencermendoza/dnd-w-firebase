@@ -5,6 +5,7 @@ import '../../styles.css';
 import { MasterContext } from './MasterContext';
 import PlayerFormDialog from './GAMEDISPLAY/playerFormDialog';
 import PlayerCardList from './GAMEDISPLAY/PlayerCardList';
+import CreatureCardList from './GAMEDISPLAY/CreatureCardList';
 import PlayerSortMenu from './GAMEDISPLAY/PlayerSortMenu';
 import TurnTimer from './GAMEDISPLAY/TurnTimer';
 import DungeonMasterMenu from './GAMEDISPLAY/DungeonMasterMenu';
@@ -18,14 +19,12 @@ const GamePage = () => {
         handleAddClick,
         loading,
         master,
-        createGame,
-        joinGame,
     } = useContext(MasterContext);
 
     const { lobbyNumber } = game;
     const { open } = playerDialog;
 
-    const [firstTime, setFirstTime] = useState(true);
+    const [displayPlayers, setDisplayPlayers] = useState(true);
 
     const masterMenu = () => {
         if (master) {
@@ -58,8 +57,10 @@ const GamePage = () => {
                         ? <PlayerFormDialog />
                         : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
                 </div>
-                <div class='playerCardList'>
-                    <PlayerCardList />
+                <div class='cardList'>
+                    {displayPlayers
+                        ? <PlayerCardList />
+                        : <CreatureCardList />}
                 </div>
             </span>
         </div >

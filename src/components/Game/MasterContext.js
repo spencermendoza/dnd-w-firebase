@@ -374,6 +374,7 @@ class GameProviderBase extends Component {
                 break;
             }
         }
+        this.props.firebase.updateTime(this.state.lobbyNumber, 2, 0);
     }
 
     isTimerRunning = (buttonName) => {
@@ -498,6 +499,7 @@ class GameProviderBase extends Component {
                 handleSortMenuChange: this.handleSortMenuChange,
                 sortPlayersBy: this.sortPlayersBy,
                 isTimerRunning: this.isTimerRunning,
+                nextHighestInit: this.nextHighestInit,
                 handleDialogRemoveClick: this.handleDialogRemoveClick,
                 masterViewStagedPlayer: this.masterViewStagedPlayer,
                 joinCachedLobby: this.joinCachedLobby,

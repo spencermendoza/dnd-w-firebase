@@ -5,6 +5,7 @@ import '../../../styles.css';
 const DungeonMasterMenu = () => {
     const {
         isTimerRunning,
+        nextHighestInit,
         master,
         game,
         timerName,
@@ -30,11 +31,13 @@ const DungeonMasterMenu = () => {
             <div class='masterMenuOpen'>
                 <ul class='masterMenu'>
                     <li onClick={() => isTimerRunning(timerName)} class='masterMenuItem'>{timerName} Timer</li>
-                    <li onClick={() => isTimerRunning('Reset')} class='masterMenuItem'>Reset Timer</li>
+                    <li onClick={() => nextHighestInit()} class='masterMenuItem'>Skip this player</li>
+                    <li onClick={() => isTimerRunning('Reset')} class='masterMenuItem'>Reset Combat</li>
+                    <li class='masterMenuItem'>Open Creature Container</li>
                     {checkForStaged()}
                     <li onClick={() => setOpen(!openMenu)} class='masterMenuItem'>Close DM Menu</li>
                 </ul>
-            </div>
+            </div >
         )
     } else {
         return (
