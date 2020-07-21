@@ -11,6 +11,9 @@ const DungeonMasterMenu = () => {
         timerName,
         stagedPlayer,
         masterViewStagedPlayer,
+        checkCreatureContainer,
+        openCreatureContainer,
+        handleCreateCreatureContainer,
     } = useContext(MasterContext);
 
     const { staged, player } = stagedPlayer;
@@ -26,6 +29,17 @@ const DungeonMasterMenu = () => {
         }
     }
 
+    const checkContainer = () => {
+        checkCreatureContainer().then(result => {
+            if (result === false) {
+                var makeContainer = window.confirm('There are no creatures in your container! Would you like to create one?')
+                if (makeContainer) {
+                    handleCreateCreatureContainer();
+                }
+            }
+        })
+    }
+
     if (openMenu) {
         return (
             <div class='masterMenuOpen'>
@@ -33,7 +47,7 @@ const DungeonMasterMenu = () => {
                     <li onClick={() => isTimerRunning(timerName)} class='masterMenuItem'>{timerName} Timer</li>
                     <li onClick={() => nextHighestInit()} class='masterMenuItem'>Skip this player</li>
                     <li onClick={() => isTimerRunning('Reset')} class='masterMenuItem'>Reset Combat</li>
-                    <li class='masterMenuItem'>Open Creature Container</li>
+                    <li onClick={() => checkContainer()} class='masterMenuItem'>Open Creature Container</li>
                     {checkForStaged()}
                     <li onClick={() => setOpen(!openMenu)} class='masterMenuItem'>Close DM Menu</li>
                 </ul>

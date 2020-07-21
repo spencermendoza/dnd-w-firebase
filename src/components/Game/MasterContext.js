@@ -254,6 +254,22 @@ class GameProviderBase extends Component {
         }
     }
 
+    ///////////////////// SORTING PLAYERS //////////////////
+
+    sortPlayersBy = (list, prop) => [...list.sort(this.customSort(prop))];
+
+    customSort = prop => (a, b) => {
+        if (a[prop] > b[prop]) return -1;
+        if (a[prop] === b[prop]) return 0;
+        if (a[prop] < b[prop]) return 1;
+    }
+
+    handleSortMenuChange = (selection) => {
+        this.setState({
+            sortBy: selection
+        });
+    }
+
     ////////////////////////////// PLAYER FUNCTIONS ///////////////////////////////
     //////////////////////////// ADDING/EDITING PLAYERS ///////////////////
 
@@ -301,14 +317,6 @@ class GameProviderBase extends Component {
         playerList.push(player);
         this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
         this.resetDialogState();
-        // this.props.firebase.gamePlayers(this.state.lobbyNumber).once('value').then(snapshot => {
-        //     var characterList = snapshot.val();
-        //     if (characterList.length < 20) {
-
-        //     } else {
-        //         alert('There are too many players in this lobby, please remove some before adding more.')
-        //     }
-        // })
     }
 
     handleUpdatePlayer = (player) => {
@@ -334,20 +342,31 @@ class GameProviderBase extends Component {
         this.props.firebase.removeStaged(this.state.lobbyNumber);
     }
 
-    ///////////////////// SORTING PLAYERS //////////////////
+    //////////////// CREATURE CONTAINER /////////////////
+    //open creature container
+    //check for creatures
+    //IF empty alert DM, dont change what is shown on screen, give option to start one and add creatures
+    //IF creatures, fetch creatures and rerender screen w creatures on it instead of players
 
-    sortPlayersBy = (list, prop) => [...list.sort(this.customSort(prop))];
-
-    customSort = prop => (a, b) => {
-        if (a[prop] > b[prop]) return -1;
-        if (a[prop] === b[prop]) return 0;
-        if (a[prop] < b[prop]) return 1;
+    openCreatureContainer = () => {
     }
 
-    handleSortMenuChange = (selection) => {
-        this.setState({
-            sortBy: selection
+    checkCreatureContainer = () => {
+        var lobby = this.state.lobbyNumber;
+        return this.props.firebase.creatureContainer(lobby).then(result => {
+            return result;
         });
+    }
+
+    handleCreateCreatureContainer = () => {
+        this.setState({
+            playerDialog: {
+                player: Player.create(),
+                open: true,
+                status: 'npc'
+            }
+        });
+        this.props.firebase.createCreatureContainer(this.state.lobbyNumber);
     }
 
     ///////////// TURN TIMER ////////////////
@@ -504,6 +523,9 @@ class GameProviderBase extends Component {
                 masterViewStagedPlayer: this.masterViewStagedPlayer,
                 joinCachedLobby: this.joinCachedLobby,
                 toggleMasterControl: this.toggleMasterControl,
+                openCreatureContainer: this.openCreatureContainer,
+                checkCreatureContainer: this.checkCreatureContainer,
+                handleCreateCreatureContainer: this.handleCreateCreatureContainer,
                 resetPlayers: this.resetPlayers,
             }}
         >{this.props.children}</Provider>

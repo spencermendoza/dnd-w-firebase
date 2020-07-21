@@ -55,6 +55,8 @@ class Firebase {
         }
     }
 
+    getCreatures = (lobby) => this.db.ref(`games/${lobby}/creatureContainer`);
+
     doesLobbyExist = (lobby) => {
         let lobbyRef = this.gameLobby(lobby).once('value')
             .then(snapshot => {
@@ -119,6 +121,19 @@ class Firebase {
 
     updateMaster = (uid) => {
         this.db.ref(`games/999/master`).set(uid)
+    }
+
+    creatureContainer = (lobby) => {
+        let creatureVar = this.getCreatures(lobby).once('value')
+            .then(snapshot => {
+                return snapshot.exists();
+            });
+        return creatureVar;
+    }
+
+    createCreatureContainer = (lobby) => {
+        this.getCreatures(lobby).set([]);
+        console.log('still wired up')
     }
 }
 
