@@ -131,9 +131,12 @@ class Firebase {
         return creatureVar;
     }
 
-    createCreatureContainer = (lobby) => {
-        this.getCreatures(lobby).set([]);
-        console.log('still wired up')
+    addCreatureToContainer = (lobby, creatures) => {
+        for (let i = 0; i < creatures.length; i++) {
+            this.db.ref(`games/${lobby}/creatureContainer/${creatures[i].name}`).set({
+                ...creatures[i]
+            });
+        }
     }
 }
 

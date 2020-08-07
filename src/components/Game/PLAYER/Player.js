@@ -6,6 +6,7 @@ export class Player {
         initiative = 0,
         armor = 0,
         id = 0,
+        control = '',
         active = Boolean,
     }) {
         this.name = name;
@@ -14,6 +15,7 @@ export class Player {
         this.initiative = initiative;
         this.armor = armor;
         this.id = id;
+        this.control = control;
         this.active = active;
     }
 

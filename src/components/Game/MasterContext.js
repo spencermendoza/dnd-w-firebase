@@ -141,6 +141,7 @@ class GameProviderBase extends Component {
             lobbyNumber: number,
             master: this.props.firebase.getUser(),
             combatants: FAKE_PLAYERS,
+            creatures: [],
             minutes: 2,
             seconds: 0,
             staged: [],
@@ -247,6 +248,8 @@ class GameProviderBase extends Component {
                 this.masterAddPlayers(player)
             } else if (dialogState.status === 'edit') {
                 this.handleUpdatePlayer(player)
+            } else if (dialogState.status === 'npc') {
+                this.masterAddCreatures(player)
             }
             this.resetStagedState();
         } else {
@@ -314,8 +317,17 @@ class GameProviderBase extends Component {
 
     masterAddPlayers = (player) => {
         let playerList = this.state.game.combatants;
+        player.control = 'player';
         playerList.push(player);
         this.props.firebase.addPlayers(playerList, this.state.lobbyNumber);
+        this.resetDialogState();
+    }
+
+    masterAddCreatures = (creature) => {
+        let creatures = this.state.game.creatures
+        creature.control = 'npc'
+        creatures.push(creature)
+        this.props.firebase.addCreatureToContainer(this.state.lobbyNumber, creatures)
         this.resetDialogState();
     }
 
@@ -366,7 +378,6 @@ class GameProviderBase extends Component {
                 status: 'npc'
             }
         });
-        this.props.firebase.createCreatureContainer(this.state.lobbyNumber);
     }
 
     ///////////// TURN TIMER ////////////////

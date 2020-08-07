@@ -36,6 +36,9 @@ const DungeonMasterMenu = () => {
                 if (makeContainer) {
                     handleCreateCreatureContainer();
                 }
+            } else if (result === true) {
+                console.log('this is working')
+                openCreatureContainer();
             }
         })
     }
