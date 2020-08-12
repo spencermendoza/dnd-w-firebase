@@ -8,7 +8,8 @@ const cronan = Player.create({
     armor: 18,
     owner: '',
     id: '0',
-    active: false
+    active: false,
+    creature: false,
 })
 
 const balazar = Player.create({
@@ -20,6 +21,7 @@ const balazar = Player.create({
     owner: '',
     id: '1',
     active: false,
+    creature: false,
 })
 
 const marsk = Player.create({
@@ -31,6 +33,7 @@ const marsk = Player.create({
     owner: '',
     id: '2',
     active: false,
+    creature: false,
 })
 
 const barri = Player.create({
@@ -42,6 +45,7 @@ const barri = Player.create({
     owner: '',
     id: '3',
     active: false,
+    creature: false,
 });
 
 

@@ -18,6 +18,7 @@ class GameProviderBase extends Component {
         sortBy: 'initiative',
         loading: false,
         timerName: 'Start',
+        cardDisplay: 'players',
         playerDialog: {
             player: Player.create(),
             open: false,
@@ -162,6 +163,7 @@ class GameProviderBase extends Component {
                 lobbyNumber: lobbyObject.lobbyNumber,
                 master: lobbyObject.master,
                 combatants: lobbyObject.combatants ? this.makeObjectsPlayers(lobbyObject.combatants) : [],
+                creatures: lobbyObject.creatureContainer ? this.makeObjectsPlayers(lobbyObject.creatureContainer) : [],
                 minutes: lobbyObject.minutes,
                 seconds: lobbyObject.seconds,
             });
@@ -250,6 +252,7 @@ class GameProviderBase extends Component {
                 this.handleUpdatePlayer(player)
             } else if (dialogState.status === 'npc') {
                 this.masterAddCreatures(player)
+                this.toggleCreatureContainer()
             }
             this.resetStagedState();
         } else {
@@ -360,7 +363,15 @@ class GameProviderBase extends Component {
     //IF empty alert DM, dont change what is shown on screen, give option to start one and add creatures
     //IF creatures, fetch creatures and rerender screen w creatures on it instead of players
 
-    openCreatureContainer = () => {
+    toggleCreatureContainer = () => {
+        var displaySetting = this.state.cardDisplay;
+        if (displaySetting === 'players') {
+            this.setState({ cardDisplay: 'creatures' })
+        } else if (displaySetting === 'creatures') {
+            this.setState({ cardDisplay: 'players' })
+        } else {
+            console.log('something has gone terribly wrong')
+        }
     }
 
     checkCreatureContainer = () => {
@@ -484,6 +495,7 @@ class GameProviderBase extends Component {
             sortBy: 'initiative',
             loading: false,
             timerName: 'Start',
+            cardDisplay: 'players',
             playerDialog: {
                 player: Player.create(),
                 open: false,
@@ -534,7 +546,7 @@ class GameProviderBase extends Component {
                 masterViewStagedPlayer: this.masterViewStagedPlayer,
                 joinCachedLobby: this.joinCachedLobby,
                 toggleMasterControl: this.toggleMasterControl,
-                openCreatureContainer: this.openCreatureContainer,
+                toggleCreatureContainer: this.toggleCreatureContainer,
                 checkCreatureContainer: this.checkCreatureContainer,
                 handleCreateCreatureContainer: this.handleCreateCreatureContainer,
                 resetPlayers: this.resetPlayers,

@@ -19,6 +19,8 @@ const GamePage = () => {
         handleAddClick,
         loading,
         master,
+        cardDisplay,
+        toggleCreatureContainer,
     } = useContext(MasterContext);
 
     const { lobbyNumber } = game;
@@ -35,6 +37,14 @@ const GamePage = () => {
     const isTestingLobby = () => {
         if (lobbyNumber === '999') {
             return <ToggleMasterSwitch />
+        }
+    }
+
+    const displaySetting = () => {
+        if (cardDisplay === 'players') {
+            return <PlayerCardList />
+        } else if (cardDisplay === 'creatures') {
+            return <CreatureCardList />
         }
     }
 
@@ -58,9 +68,7 @@ const GamePage = () => {
                         : <button onClick={handleAddClick} disabled={open} id='addButton'>Add some players!</button>}
                 </div>
                 <div class='cardList'>
-                    {displayPlayers
-                        ? <PlayerCardList />
-                        : <CreatureCardList />}
+                    {displaySetting()}
                 </div>
             </span>
         </div >

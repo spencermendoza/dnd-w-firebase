@@ -12,8 +12,9 @@ const DungeonMasterMenu = () => {
         stagedPlayer,
         masterViewStagedPlayer,
         checkCreatureContainer,
-        openCreatureContainer,
+        toggleCreatureContainer,
         handleCreateCreatureContainer,
+        cardDisplay,
     } = useContext(MasterContext);
 
     const { staged, player } = stagedPlayer;
@@ -37,20 +38,31 @@ const DungeonMasterMenu = () => {
                     handleCreateCreatureContainer();
                 }
             } else if (result === true) {
-                console.log('this is working')
-                openCreatureContainer();
+                toggleCreatureContainer();
             }
         })
     }
 
+    const toggleContainer = () => {
+        if (cardDisplay === 'players') {
+            return (
+                <li onClick={() => checkContainer()} class='masterMenuItem'>Open Creature Container</li>
+            )
+        } else if (cardDisplay === 'creatures') {
+            return (
+                <li onClick={() => toggleCreatureContainer()} class='masterMenuItem'>Close Creature Container</li>
+            )
+        }
+    }
+
     if (openMenu) {
         return (
-            <div class='masterMenuOpen'>
+            <div class='masterMenuOpen' onClick={() => setOpen(false)}>
                 <ul class='masterMenu'>
                     <li onClick={() => isTimerRunning(timerName)} class='masterMenuItem'>{timerName} Timer</li>
                     <li onClick={() => nextHighestInit()} class='masterMenuItem'>Skip this player</li>
                     <li onClick={() => isTimerRunning('Reset')} class='masterMenuItem'>Reset Combat</li>
-                    <li onClick={() => checkContainer()} class='masterMenuItem'>Open Creature Container</li>
+                    {toggleContainer()}
                     {checkForStaged()}
                     <li onClick={() => setOpen(!openMenu)} class='masterMenuItem'>Close DM Menu</li>
                 </ul>

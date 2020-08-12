@@ -8,8 +8,30 @@ const CreatureCardList = () => {
         game,
     } = useContext(MasterContext);
 
+    const { creatures } = game;
+
+    const creatureCheck = () => {
+        if (creatures.length > 0) {
+            return (
+                <div class='testCardListDiv'>
+                    {creatures.map(creature => (
+                        <PlayerCard
+                            player={creature}
+                            key={creature.id}
+                        />
+                    ))}
+                </div>
+            );
+        } else {
+            console.log(game.creatures)
+            return (<><span>There are no creatures in this game! Add some creatures for your players to challenge!</span><hr /></>);
+        }
+    }
+
     return (
-        <div></div>
+        <div>
+            {creatureCheck()}
+        </div>
     )
 }
 

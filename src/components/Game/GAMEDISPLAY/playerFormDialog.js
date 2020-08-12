@@ -14,6 +14,7 @@ class PlayerFormDialog extends Component {
         this.playerArmorRef = React.createRef();
         this.playerDamageRef = React.createRef();
         this.playerIdRef = React.createRef();
+        this.playerControlRef = React.createRef();
     }
 
     static contextType = MasterContext;
@@ -35,6 +36,7 @@ class PlayerFormDialog extends Component {
             owner: '',
             id: player.id ? player.id : id,
             active: false,
+            creature: this.playerControlRef.current.value,
         });
         onConfirm(newPlayer);
     }
@@ -50,12 +52,9 @@ class PlayerFormDialog extends Component {
             handleDialogCancelClick,
             handleDialogConfirmClick,
             handleDialogRemoveClick,
+            master,
         } = this.context;
         const { player, open } = playerDialog;
-
-        // if (!open) {
-        //     return null;
-        // }
 
         return (
             <form id='formDialog'>
@@ -99,10 +98,19 @@ class PlayerFormDialog extends Component {
                     placeholder='Armor Class: '
                     class='formItems'
                 />
+                <label>
+                    <input
+                        type='checkbox'
+                        ref={this.playerControlRef}
+                        defaultValue={false}
+                        disabled={!master}
+                        class='formItems'
+                    ></input>Is this a creature?
+                </label>
                 <button onClick={e => this.handleSubmit(e, handleDialogConfirmClick, player)} class='formButtons'>Confirm</button>
                 <button onClick={e => this.handleCancel(e, handleDialogCancelClick)} class='formButtons'>Cancel</button>
                 <button onClick={e => handleDialogRemoveClick(player)} class='formButtons'>Remove</button>
-            </form>
+            </form >
         )
     }
 }

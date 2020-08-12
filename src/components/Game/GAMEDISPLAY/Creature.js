@@ -1,4 +1,4 @@
-export class Player {
+export class Creature {
     constructor({
         name = '',
         hp = 0,
@@ -6,9 +6,8 @@ export class Player {
         initiative = 0,
         armor = 0,
         id = 0,
-        control = '',
+        control = 'master',
         active = Boolean,
-        creature = Boolean,
     }) {
         this.name = name;
         this.hp = hp;
@@ -18,16 +17,9 @@ export class Player {
         this.id = id;
         this.control = control;
         this.active = active;
-        this.creature = creature;
     }
 
-    static create(playerObj = {}) {
-        return new Player(playerObj);
+    static create(creatureObj = {}) {
+        return new Creature(creatureObj);
     }
 }
-
-
-
-
-
-
